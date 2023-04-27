@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Home;
 
 import android.os.Bundle;
 
@@ -12,9 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication.Adapter.WishlistRecyclerViewAdapter;
+import com.example.myapplication.Items.RecipeItem;
+import com.example.myapplication.R;
+
 import java.util.ArrayList;
 
-public class IngredientFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link WishlistFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class WishlistFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,14 +34,21 @@ public class IngredientFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public IngredientFragment() {
+    public WishlistFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment WishlistFragment.
+     */
     // TODO: Rename and change types and number of parameters
-    public static IngredientFragment newInstance(String param1, String param2) {
-        IngredientFragment fragment = new IngredientFragment();
+    public static WishlistFragment newInstance(String param1, String param2) {
+        WishlistFragment fragment = new WishlistFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -53,28 +69,25 @@ public class IngredientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ingredient, container, false);
+        return inflater.inflate(R.layout.fragment_wishlist, container, false);
     }
+    
     RecyclerView rv;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rv = view.findViewById(R.id.ingredient_rv);
+        rv = view.findViewById(R.id.wishlist_rv);
 
-        ArrayList<IngredientItem> Ingredients = new ArrayList<>();
-        Ingredients.add(new IngredientItem("1 tablespoon kosher salt"));
-        Ingredients.add(new IngredientItem("1 tablespoon black pepper"));
-        Ingredients.add(new IngredientItem("1 teaspoon garlic powder"));
-        Ingredients.add(new IngredientItem("1/4 cup mayonnaise"));
-        Ingredients.add(new IngredientItem("1 tablespoon Dijon mustard"));
-        Ingredients.add(new IngredientItem("1 tablespoon ketchup"));
-        Ingredients.add(new IngredientItem("1 pound ground chuck (90:10)"));
-        Ingredients.add(new IngredientItem("6 slices American cheese"));
-        Ingredients.add(new IngredientItem("Green lettuce leaves"));
-        Ingredients.add(new IngredientItem("Thinly sliced fresh tomato"));
+        ArrayList<RecipeItem> Recipies = new ArrayList<>();
+        Recipies.add(new RecipeItem(R.drawable.burger,"Smashed Burger","4.5","1"));
+        Recipies.add(new RecipeItem(R.drawable.burger,"Beef Burger","5.0","2"));
+        Recipies.add(new RecipeItem(R.drawable.burger,"Chicken Burger","3.2","4"));
+        Recipies.add(new RecipeItem(R.drawable.burger,"Cheese Burger","1.4","6"));
+        Recipies.add(new RecipeItem(R.drawable.burger,"KFC Burger","4.0","3"));
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
-        IngredientRecyclerViewAdapter adapter = new IngredientRecyclerViewAdapter(getContext(),Ingredients);
+        WishlistRecyclerViewAdapter adapter = new WishlistRecyclerViewAdapter(getContext(),Recipies);
         rv.setLayoutManager(lm);
         rv.setHasFixedSize(true);
         rv.setAdapter(adapter);

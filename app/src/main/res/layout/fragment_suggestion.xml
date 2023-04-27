@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SuggestionFragment">
+    tools:context=".Home.SuggestionFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/balance_text_unit_type11"
+                android:id="@+id/suggestions_tv"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="324dp"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
                 <AutoCompleteTextView
-                    android:id="@+id/balance_autocomplete_product_type"
+                    android:id="@+id/autocomplete_suggestions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none" />
@@ -94,10 +94,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/balance_text_unit_type11"
+                app:layout_constraintBottom_toBottomOf="@+id/suggestions_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/balance_text_unit_type11"
-                app:layout_constraintTop_toTopOf="@+id/balance_text_unit_type11">
+                app:layout_constraintStart_toEndOf="@+id/suggestions_tv"
+                app:layout_constraintTop_toTopOf="@+id/suggestions_tv">
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -112,30 +112,31 @@
                 android:id="@+id/imageView12"
                 android:layout_width="224dp"
                 android:layout_height="277dp"
-                android:layout_marginBottom="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="60dp"
                 android:alpha="0.6"
                 android:src="@drawable/cookingpot"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/textView12"
                 app:layout_constraintHorizontal_bias="0.486"
-                app:layout_constraintStart_toStartOf="@+id/textView12" />
+                app:layout_constraintStart_toStartOf="@+id/textView12"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
                 android:letterSpacing="0.1"
                 android:text="Preparing You Recipe ..."
                 android:textColor="#818181"
                 android:textSize="20sp"
                 android:textStyle="normal"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/imageView12"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/balance_text_unit_type11"
-                app:layout_constraintVertical_bias="0.831" />
+                app:layout_constraintTop_toBottomOf="@+id/suggestions_tv" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -151,7 +152,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/balance_text_unit_type11" />
+                app:layout_constraintTop_toBottomOf="@+id/suggestions_tv" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/suggestion_rv"

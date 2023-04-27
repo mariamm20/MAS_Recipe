@@ -12,37 +12,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-        <activity
-            android:name=".Ingredients"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
         <activity
-            android:name=".Home"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:name=".Ingredients.Ingredients"
+            android:exported="false"
+            android:theme="@style/no_status_bar"/>
+
         <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
+            android:name=".Home.Home"
+            android:exported="false"
+            android:theme="@style/no_status_bar"/>
+
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
+            android:name=".Registration.ForgetPassword"
+            android:exported="false"
+            android:theme="@style/no_status_bar"/>
+
         <activity
-            android:name=".OnboardingActivity"
-            android:exported="false" />
+            android:name=".Registration.Register"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".Registration.Login"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+
+        <activity
+            android:name=".WelcomeScreens.Onboarding"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+
+        <activity
+            android:name=".WelcomeScreens.SplashScreen"
+            android:exported="true"
+            android:theme="@style/no_status_bar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

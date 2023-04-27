@@ -1,6 +1,7 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Ingredients.Ingredients;
+import com.example.myapplication.R;
+import com.example.myapplication.Items.RecipeItem;
 
 import java.util.ArrayList;
 
@@ -46,6 +52,14 @@ public class WishlistRecyclerViewAdapter extends RecyclerView.Adapter<WishlistRe
         holder.recipe_name.startAnimation(animation);
         holder.recipe_rate.startAnimation(animation);
         holder.recipe_time.startAnimation(animation);
+
+        holder.wishlist_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Ingredients.class);
+                context.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -58,6 +72,8 @@ public class WishlistRecyclerViewAdapter extends RecyclerView.Adapter<WishlistRe
     class RecipiesViewHolder extends RecyclerView.ViewHolder{
         TextView recipe_name,recipe_rate,recipe_time;
         ImageView iv_image;
+        CardView wishlist_card;
+
 
         public RecipiesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +81,8 @@ public class WishlistRecyclerViewAdapter extends RecyclerView.Adapter<WishlistRe
             recipe_name = itemView.findViewById(R.id.recipe_name);
             recipe_rate =  itemView.findViewById(R.id.recipie_rate);
             recipe_time = itemView.findViewById(R.id.recipe_time);
+            wishlist_card = itemView.findViewById(R.id.wishlist_card);
+
         }
     }
 }

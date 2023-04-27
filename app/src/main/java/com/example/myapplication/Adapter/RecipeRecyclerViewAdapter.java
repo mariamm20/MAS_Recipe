@@ -1,7 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapter;
 import static android.app.PendingIntent.getActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Ingredients.Ingredients;
+import com.example.myapplication.R;
+import com.example.myapplication.Items.RecipeItem;
+
 import java.util.ArrayList;
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecipiesViewHolder> {
+public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.RecipiesViewHolder> {
     Context context;
     ArrayList<RecipeItem>  Recipies;
-    public RecyclerViewAdapter(Context context, ArrayList<RecipeItem> recipies) {
+    public RecipeRecyclerViewAdapter(Context context, ArrayList<RecipeItem> recipies) {
            this.Recipies = recipies;
            this.context = context;
     }
@@ -46,6 +52,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.recipe_name.startAnimation(animation);
         holder.recipe_rate.startAnimation(animation);
         holder.recipe_time.startAnimation(animation);
+
+        holder.recipe_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Ingredients.class);
+                context.startActivity(intent);
+            }
+        });
+
     }
     @Override
     public int getItemCount() {
@@ -58,6 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class RecipiesViewHolder extends RecyclerView.ViewHolder{
         TextView recipe_name,recipe_rate,recipe_time;
         ImageView iv_image;
+        CardView recipe_card;
 
         public RecipiesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +81,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             recipe_name = itemView.findViewById(R.id.recipe_name);
             recipe_rate =  itemView.findViewById(R.id.recipie_rate);
             recipe_time = itemView.findViewById(R.id.recipe_time);
+            recipe_card = itemView.findViewById(R.id.recipe_card);
         }
     }
 }

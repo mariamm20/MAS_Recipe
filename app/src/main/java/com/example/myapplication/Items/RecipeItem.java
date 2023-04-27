@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Items;
 
 public class RecipeItem {
     private int recipe_img;

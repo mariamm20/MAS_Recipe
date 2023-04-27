@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Items;
 
 public class StepItem {
     String step_text;
