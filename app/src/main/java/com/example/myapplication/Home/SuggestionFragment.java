@@ -76,7 +76,7 @@ public class SuggestionFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_suggestion, container, false);
     }
 
-    String[] suggestions = {"Breakfast", "Lunch", "Dinner","Snacks"};
+    String[] suggestions = {"Breakfast", "Lunch", "Dinner", "Desert","Snacks"};
     AutoCompleteTextView autoComplete_suggestion;
     ArrayAdapter<String> adapter_suggestions;
     RecyclerView rv;
