@@ -20,7 +20,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
-                android:layout_height="230dp"
+                android:layout_height="200dp"
                 android:background="@color/colorPrimary"
                 android:tintMode="multiply"
                 app:srcCompat="@drawable/veg1"

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.Home.Home;
 import com.example.myapplication.R;
+import com.example.myapplication.WelcomeScreens.Onboarding;
 
 public class Login extends AppCompatActivity {
 
@@ -27,7 +28,7 @@ public class Login extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Login.this, Home.class);
+                Intent intent = new Intent(Login.this, Onboarding.class);
                 startActivity(intent);
             }
         });

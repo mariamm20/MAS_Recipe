@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.myapplication.Home.Home;
 import com.example.myapplication.R;
 import com.example.myapplication.Registration.Login;
 
@@ -23,7 +24,7 @@ public class Onboarding extends AppCompatActivity {
         get_started_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Onboarding.this, Login.class);
+                Intent intent = new Intent(Onboarding.this, Home.class);
                 startActivity(intent);
             }
         });
