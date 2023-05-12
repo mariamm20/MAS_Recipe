@@ -1,5 +1,7 @@
 package com.example.myapplication.Home;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,31 +10,33 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.myapplication.Adapter.SuggestionRecyclerViewAdapter;
-import com.example.myapplication.Items.RecipeItem;
+import com.example.myapplication.API.Listeners.RandomRecipesResponseListener;
+import com.example.myapplication.API.Listeners.RecipeClickListener;
+import com.example.myapplication.API.Models.RandomRecipesApiResponse;
+import com.example.myapplication.API.RequestManager;
+import com.example.myapplication.Adapter.RandomRecipesAdapter;
 import com.example.myapplication.R;
+import com.example.myapplication.RecipeDetails.RecipeDetailsActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SuggestionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SuggestionFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -40,15 +44,6 @@ public class SuggestionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SuggestionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SuggestionFragment newInstance(String param1, String param2) {
         SuggestionFragment fragment = new SuggestionFragment();
         Bundle args = new Bundle();
@@ -68,44 +63,90 @@ public class SuggestionFragment extends Fragment {
         }
 
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_suggestion, container, false);
     }
 
-    String[] suggestions = {"Breakfast", "Lunch", "Dinner", "Desert","Snacks"};
     AutoCompleteTextView autoComplete_suggestion;
     ArrayAdapter<String> adapter_suggestions;
-    RecyclerView rv;
+    RecyclerView rv_suggested_recipes;
+
+    ProgressDialog dialog;
+    RequestManager manager;
+    RandomRecipesAdapter randomRecipesAdapter;
+
+    ImageView img_empty_recipes;
+    TextView txt_empty_recipes, txt_suggested_recipes;
+
+    List<String> tags = new ArrayList<>();
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rv = view.findViewById(R.id.suggestion_rv);
+        rv_suggested_recipes = view.findViewById(R.id.rv_suggested_recipes);
+        img_empty_recipes = view.findViewById(R.id.img_empty_recipes);
+        txt_empty_recipes = view.findViewById(R.id.txt_empty_recipes);
+        txt_suggested_recipes = view.findViewById(R.id.txt_suggested_recipes);
 
-        ArrayList<RecipeItem> Recipies = new ArrayList<>();
-        Recipies.add(new RecipeItem(R.drawable.burger,"Smashed Burger","4.5","1"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"Beef Burger","5.0","2"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"Chicken Burger","3.2","4"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"Cheese Burger","1.4","6"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"KFC Burger","4.0","3"));
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
-        SuggestionRecyclerViewAdapter adapter = new SuggestionRecyclerViewAdapter(getContext(),Recipies);
-        rv.setLayoutManager(lm);
-        rv.setHasFixedSize(true);
-        rv.setAdapter(adapter);
+        dialog = new ProgressDialog(getContext());
+        dialog.setTitle("Loading Suggestions...");
 
         autoComplete_suggestion = view.findViewById(R.id.autocomplete_suggestions);
-        adapter_suggestions = new ArrayAdapter<String>(this.getContext(), R.layout.select, suggestions);
+        adapter_suggestions = new ArrayAdapter<String>(this.getContext(), R.layout.tags_select, getResources().getStringArray(R.array.tags));
         autoComplete_suggestion.setAdapter(adapter_suggestions);
+        autoComplete_suggestion.setOnItemClickListener(clickListener);
 
+        manager = new RequestManager(getContext());
 
 
     }
 
+    private final RandomRecipesResponseListener randomRecipesResponseListener = new RandomRecipesResponseListener() {
+        @Override
+        public void didFetch(RandomRecipesApiResponse response, String msg) {
+            dialog.dismiss();
+            rv_suggested_recipes.setHasFixedSize(true);
+            rv_suggested_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener);
+            rv_suggested_recipes.setAdapter(randomRecipesAdapter);
+        }
+
+        @Override
+        public void didError(String msg) {
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+
+        }
+    };
+
+    private final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            img_empty_recipes.setVisibility(View.GONE);
+            txt_empty_recipes.setVisibility(View.GONE);
+            txt_suggested_recipes.setVisibility(View.VISIBLE);
+            rv_suggested_recipes.setVisibility(View.VISIBLE);
+            tags.clear();
+            String itemSelected = adapterView.getItemAtPosition(i).toString();
+            tags.add(itemSelected);
+            Log.d("spinner", itemSelected);
+            manager.getSuggestedRecipes(randomRecipesResponseListener, tags);
+            dialog.show();
+        }
+    };
+
+    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
+        @Override
+        public void onRecipeClicked(String id) {
+            startActivity(new Intent(getContext(), RecipeDetailsActivity.class)
+                    .putExtra("id", id));
+
+            Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
+            Log.d("Recipe ID", id);
+        }
+    };
 
 
 }

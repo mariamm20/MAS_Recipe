@@ -72,13 +72,13 @@ public class WishlistFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_wishlist, container, false);
     }
     
-    RecyclerView rv;
+    RecyclerView rv_favourite_recipes;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rv = view.findViewById(R.id.wishlist_rv);
+        rv_favourite_recipes = view.findViewById(R.id.rv_favourite_recipes);
 
         ArrayList<RecipeItem> Recipies = new ArrayList<>();
         Recipies.add(new RecipeItem(R.drawable.burger,"Smashed Burger","4.5","1"));
@@ -88,9 +88,9 @@ public class WishlistFragment extends Fragment {
         Recipies.add(new RecipeItem(R.drawable.burger,"KFC Burger","4.0","3"));
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
         WishlistRecyclerViewAdapter adapter = new WishlistRecyclerViewAdapter(getContext(),Recipies);
-        rv.setLayoutManager(lm);
-        rv.setHasFixedSize(true);
-        rv.setAdapter(adapter);
+        rv_favourite_recipes.setLayoutManager(lm);
+        rv_favourite_recipes.setHasFixedSize(true);
+        rv_favourite_recipes.setAdapter(adapter);
 
 
     }

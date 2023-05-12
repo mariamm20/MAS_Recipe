@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,44 +14,44 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-
         <activity
-            android:name=".Ingredients.Ingredients"
+            android:name=".Registration.EditProfileActivity"
             android:exported="false"
             android:theme="@style/no_status_bar"/>
-
         <activity
-            android:name=".Home.Home"
-            android:exported="false"
-            android:theme="@style/no_status_bar"/>
-
-        <activity
-            android:name=".Registration.ForgetPassword"
-            android:exported="false"
-            android:theme="@style/no_status_bar"/>
-
-        <activity
-            android:name=".Registration.Register"
+            android:name=".Home.SearchActivity"
             android:exported="false"
             android:theme="@style/no_status_bar" />
-
         <activity
-            android:name=".Registration.Login"
+            android:name=".RecipeDetails.RecipeDetailsActivity"
             android:exported="false"
             android:theme="@style/no_status_bar" />
-
         <activity
-            android:name=".WelcomeScreens.Onboarding"
+            android:name=".Home.HomeActivity"
             android:exported="false"
             android:theme="@style/no_status_bar" />
-
         <activity
-            android:name=".WelcomeScreens.SplashScreen"
+            android:name=".Registration.ForgetPasswordActivity"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+        <activity
+            android:name=".Registration.SignUpActivity"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+        <activity
+            android:name=".Registration.LoginActivity"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+        <activity
+            android:name=".WelcomeScreens.OnboardingActivity"
+            android:exported="false"
+            android:theme="@style/no_status_bar" />
+        <activity
+            android:name=".WelcomeScreens.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/no_status_bar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

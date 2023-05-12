@@ -1,13 +1,32 @@
 <resources>
     <string name="app_name">MAS Recipe</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="choose">choose</string>
-    <string-array name="numbers">
-        <item>One</item>
-        <item>Two</item>
-        <item>Three</item>
-        <item>Four</item>
-        <item>Five</item>
+    <string name="api_key">11b204e6b6e344c3b1609bc853a3079c</string>
+    <string-array name="tags">
+        <item>main course</item>
+        <item>side dish</item>
+        <item>dessert</item>
+        <item>appetizer</item>
+        <item>salad</item>
+        <item>bread</item>
+        <item>breakfast</item>
+        <item>soup</item>
+        <item>beverage</item>
+        <item>sauce</item>
+        <item>marinade</item>
+        <item>fingerfood</item>
+        <item>snack</item>
+        <item>drink</item>
     </string-array>
+
+    <string name="title_2">Cook like a chef</string>
+    <string name="title_1">Explore Recipes</string>
+    <string name="title_3">Share your best</string>
+
+    <string name="description_1">Choose your ideal recipe from our thousands of collection</string>
+    <string name="description_3">Share the best recipes you find with your friends and enjoy!</string>
+    <string name="description_2">Follow the instructions and try ingredients to make delicious meals</string>
+
+    <string name="main_description">Recipe is a story end with a good meal</string>
+    <string name="second_description">Discover more than thousands of amazing recipes in your hands and easy to cook and enjoy!</string>
+
 </resources>

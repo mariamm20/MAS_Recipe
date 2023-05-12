@@ -41,7 +41,7 @@
                         android:layout_weight="1"
                         android:gravity="bottom|center"
                         android:text="Food Suggestor"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/green_800"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
                         android:gravity="center|top"
                         android:paddingTop="8dp"
                         android:text="Stop thinking too much\nDo this random recipe!"
-                        android:textColor="@color/colorGrey"
+                        android:textColor="@color/gray"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -70,17 +70,17 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/suggestions_tv"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="324dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:hintTextColor="@color/colorPrimary"
-                app:boxStrokeColor="@color/colorPrimary"
+                android:layout_margin="16dp"
                 android:hint="Choose Meal of Random Recipe"
                 app:boxCornerRadiusBottomEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="@color/green_600"
+                app:hintTextColor="@color/green_600"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
@@ -96,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 app:cardCornerRadius="10dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/suggestions_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/suggestions_tv"
@@ -105,13 +106,13 @@
                     android:id="@+id/imageButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/green_600"
                     android:padding="8dp"
                     android:src="@drawable/ic_baseline_saved_search_24" />
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/img_empty_recipes"
                 android:layout_width="224dp"
                 android:layout_height="277dp"
                 android:layout_marginTop="8dp"
@@ -120,13 +121,13 @@
                 android:src="@drawable/cookingpot"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textView12"
+                app:layout_constraintEnd_toEndOf="@+id/txt_empty_recipes"
                 app:layout_constraintHorizontal_bias="0.486"
-                app:layout_constraintStart_toStartOf="@+id/textView12"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintStart_toStartOf="@+id/txt_empty_recipes"
+                app:layout_constraintTop_toBottomOf="@+id/txt_empty_recipes" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/txt_empty_recipes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="72dp"
@@ -141,14 +142,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/suggestions_tv" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/txt_suggested_recipes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:text="Suggestion Results"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/green_800"
                 android:textSize="20sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -157,7 +158,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/suggestions_tv" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/suggestion_rv"
+                android:id="@+id/rv_suggested_recipes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="80dp"
@@ -166,7 +167,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/txt_suggested_recipes"
                 app:layout_constraintVertical_bias="0.0">
 
             </androidx.recyclerview.widget.RecyclerView>

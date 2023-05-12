@@ -1,49 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical"
+    android:background="@drawable/splash_bac"
     android:gravity="center_horizontal"
-    tools:context=".WelcomeScreens.SplashScreen">
+    android:orientation="vertical"
+    tools:context=".WelcomeScreens.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:srcCompat="@drawable/hi"
-        android:layout_marginTop="100dp"/>
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="150dp"
+        app:srcCompat="@drawable/green_logo" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:textColor="@color/colorWhite"
-        android:textSize="60dp"
-        android:textStyle="bold"
-        android:layout_marginTop="36dp"/>
-
-    <TextView
-        android:id="@+id/desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Let's make you a good cook"
-        android:textColor="@color/colorWhite"
-        android:textSize="20dp"/>
+        android:layout_marginHorizontal="70dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/main_description"
+        android:textAlignment="center"
+        android:textColor="@color/green_800"
+        android:textSize="28sp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="55dp"
-        android:layout_marginRight="55dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginHorizontal="55dp"
+        android:layout_marginTop="140dp"
         android:indeterminate="true"
         android:indeterminateDuration="1000" />
 

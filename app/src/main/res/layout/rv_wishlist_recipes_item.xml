@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wishlist_recipe_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp">
+
+            <ImageView
+                android:id="@+id/wishlist_recipes_img"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/burger" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="270dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_wishlist_recipes_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:maxWidth="150dp"
+                android:maxLines="1"
+                android:text="Recipe Name"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/wishlist_checkbox"
+                app:layout_constraintEnd_toStartOf="@+id/wishlist_checkbox"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_wishlist_recipes_title"
+                app:srcCompat="@drawable/clock" />
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_wishlist_recipes_time"
+                app:layout_constraintStart_toEndOf="@+id/txt_wishlist_recipes_time"
+                app:layout_constraintTop_toTopOf="@+id/txt_wishlist_recipes_time"
+                app:layout_constraintVertical_bias="0.666"
+                app:srcCompat="@drawable/ic_baseline_people_24" />
+
+            <TextView
+                android:id="@+id/txt_wishlist_recipes_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:text="Time"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/imageView6"
+                app:layout_constraintVertical_bias="0.8" />
+
+            <TextView
+                android:id="@+id/txt_wishlist_recipes_servings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="4dp"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Servings"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/wishlist_checkbox"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+            <CheckBox
+                android:id="@+id/wishlist_checkbox"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="24dp"
+                android:button="@null"
+                android:drawableTop="@drawable/wishlist_selector"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
