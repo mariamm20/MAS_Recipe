@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment {
     RandomRecipesAdapter randomRecipesAdapter;
     RecyclerView rv_random_recipes;
     CardView searchbar_card, profile_card;
+    ImageView reload_btn;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class HomeFragment extends Fragment {
         rv_random_recipes = view.findViewById(R.id.rv_random_recipes);
         searchbar_card = view.findViewById(R.id.searchbar_card);
         profile_card = view.findViewById(R.id.profile_card);
+        reload_btn = view.findViewById(R.id.reload_btn);
 
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("Loading Recipes...");
@@ -85,6 +88,14 @@ public class HomeFragment extends Fragment {
         manager = new RequestManager(getContext());
         manager.getRandomRecipes(randomRecipesResponseListener);
         dialog.show();
+
+        reload_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                manager.getRandomRecipes(randomRecipesResponseListener);
+                dialog.show();
+            }
+        });
 
         searchbar_card.setOnClickListener(new View.OnClickListener() {
             @Override
