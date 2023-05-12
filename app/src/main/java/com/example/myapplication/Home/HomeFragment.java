@@ -92,6 +92,7 @@ public class HomeFragment extends Fragment {
         reload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.setTitle("Reloading Recipes...");
                 manager.getRandomRecipes(randomRecipesResponseListener);
                 dialog.show();
             }
