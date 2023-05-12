@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MAS Recipe</string>
-    <string name="api_key">11b204e6b6e344c3b1609bc853a3079c</string>
+    <string name="api_key">7a7a9b2a3a124769a03d65b79a60881f</string>
     <string-array name="tags">
         <item>main course</item>
         <item>side dish</item>
