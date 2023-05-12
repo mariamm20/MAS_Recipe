@@ -1,5 +1,6 @@
 package com.example.myapplication.Home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.myapplication.Adapter.RecipeRecyclerViewAdapter;
 import com.example.myapplication.Ingredients.Ingredients;
@@ -30,6 +32,7 @@ public class HomeFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    private TextView tName;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -51,10 +54,15 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
+
 
     }
 
@@ -62,6 +70,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+
     }
 
     @Override
@@ -82,6 +91,11 @@ public class HomeFragment extends Fragment {
         rv.setLayoutManager(lm);
         rv.setHasFixedSize(true);
         rv.setAdapter(adapter);
+
+        // show name
+//        tName = view.findViewById(R.id.textView3);
+//        String name = getIntent.getStringExtra("name");
+//        tName.setText(name);
 
 
 //        searchbar.setOnClickListener(new View.OnClickListener() {
