@@ -4,6 +4,7 @@ package com.example.mas_recipes.RoomDatabase;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 @Dao
 public interface UserDao {
@@ -17,6 +18,10 @@ public interface UserDao {
     @Query("SELECT * from users where email = (:email)")
     UserEntity checkEmail(String email);
 
-    @Query("SELECT id FROM users WHERE email = :email")
-    int getUserIdByEmail(String email);
+    @Query("SELECT * FROM users WHERE id = :profileId")
+    UserEntity getProfileById(int profileId);
+    @Update
+    void updateProfile(UserEntity userEntity);
+    @Query("UPDATE users SET is_logged = 0 WHERE id = :userId")
+    void logout(int userId);
 }

@@ -18,6 +18,8 @@ public class UserEntity
     String password;
     @ColumnInfo(name = "confirmPassword")
     String confirmPassword;
+    @ColumnInfo(name = "is_logged")
+    Boolean is_logged;
 
     public Integer getId() {
         return id;
@@ -57,5 +59,13 @@ public class UserEntity
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public Boolean getIs_logged() {
+        return is_logged;
+    }
+
+    public void setIs_logged(Boolean is_logged) {
+        this.is_logged = is_logged;
     }
 }

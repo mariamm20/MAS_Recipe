@@ -100,6 +100,7 @@
                 android:drawableLeft="@drawable/ic_baseline_lock_reset_24"
                 android:drawablePadding="8dp"
                 android:ems="10"
+                android:visibility="gone"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:padding="8dp"

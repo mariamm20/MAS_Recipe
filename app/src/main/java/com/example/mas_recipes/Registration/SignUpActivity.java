@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,14 +62,31 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
                 } else if (!checkPassword(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Please enter the same passwords", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
+                } else {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             // Register User
+
                             userDao.registerUser(userEntity);
+
+                            UserEntity userEntity1 = userDao.login(userEntity.getEmail(), userEntity.getPassword());
+                            userEntity1.setIs_logged(true);
+                            userDao.updateProfile(userEntity1);
+
+
+
+
+                            SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putInt("id",userEntity1.getId());
+                            editor.putString("name", userEntity1.getUserName());
+                            editor.putString("name", userEntity1.getUserName());
+                            editor.putString("email", userEntity1.getEmail());
+                            editor.putString("password", userEntity1.getPassword());
+                            editor.putBoolean("is_user_logged_in", true);
+
+                            editor.apply();
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -77,14 +96,16 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 }
                             });
+
                         }
+
+
                     }).start();
                 }
             }
 
 
-
-          //  }
+            //  }
 
         });
 
@@ -97,16 +118,17 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-    private Boolean validationInput(UserEntity userEntity)
-    {
+
+    private Boolean validationInput(UserEntity userEntity) {
         if (userEntity.getUserName().isEmpty() ||
-        userEntity.getEmail().isEmpty() ||
-        userEntity.getPassword().isEmpty()||
-        userEntity.getConfirmPassword().isEmpty()){
-            return  false;
+                userEntity.getEmail().isEmpty() ||
+                userEntity.getPassword().isEmpty() ||
+                userEntity.getConfirmPassword().isEmpty()) {
+            return false;
         }
         return true;
     }
+
     private static boolean isValidEmail(UserEntity userEntity) {
         if (userEntity.getEmail() == null) {
             return false;
@@ -131,14 +153,13 @@ public class SignUpActivity extends AppCompatActivity {
 //
 //    }
 
-    private static boolean checkPassword(UserEntity userEntity)
-    {
-        if(!Objects.equals(userEntity.getPassword(), userEntity.getConfirmPassword())){
-            return  false;
+    private static boolean checkPassword(UserEntity userEntity) {
+        if (!Objects.equals(userEntity.getPassword(), userEntity.getConfirmPassword())) {
+            return false;
         }
 
 
-            return  true;
+        return true;
 
     }
 }

@@ -63,10 +63,17 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
+                                userEntity.setIs_logged(true);
+                                userDao.updateProfile(userEntity);
                                 // Store the user ID in a shared preference
                                 SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putInt("id", userEntity.getId());
+                                editor.putString("name", userEntity.getUserName());
+                                editor.putString("email", userEntity.getEmail());
+                                editor.putString("password", userEntity.getPassword());
+                                editor.putBoolean("is_user_logged_in", true);
+
                                 editor.apply();
 
                                 //String name = userEntity.userName;

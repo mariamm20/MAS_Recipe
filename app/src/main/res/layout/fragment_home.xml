@@ -21,15 +21,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="230dp"
                 android:background="@color/green_600"
-                android:tintMode="multiply"
                 android:scaleType="center"
+                android:tintMode="multiply"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/home_bac"/>
+                app:srcCompat="@drawable/home_bac" />
 
             <TextView
                 android:id="@+id/tv_id"
@@ -67,11 +67,10 @@
                 android:id="@+id/profile_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="-50dp"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintStart_toEndOf="@+id/tv_id"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
                 app:layout_constraintTop_toTopOf="@+id/tv_id">
 
                 <ImageView

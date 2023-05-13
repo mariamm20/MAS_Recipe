@@ -81,7 +81,9 @@ public class HomeFragment extends Fragment {
     ImageView reload_btn;
     AppDatabase db;
     TextView tv_id;
+    String name;
     int user_id;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -93,6 +95,7 @@ public class HomeFragment extends Fragment {
         reload_btn = view.findViewById(R.id.reload_btn);
         tv_id = view.findViewById(R.id.tv_id);
 
+
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("Loading Recipes...");
 
@@ -102,8 +105,11 @@ public class HomeFragment extends Fragment {
 
         SharedPreferences pref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         user_id = pref.getInt("id", -1);
+        name = pref.getString("name", "Hello, Dear Customer");
+
         Log.d("user_id", String.valueOf(user_id));
-        tv_id.setText(String.valueOf(user_id));
+        tv_id.setText("Hello, " +name);
+
 
 
         manager = new RequestManager(getContext());
