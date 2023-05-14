@@ -33,7 +33,12 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        findView();
+        userName = findViewById(R.id.signup_username_edittext);
+        Email = findViewById(R.id.signup_email_edittext);
+        Password = findViewById(R.id.signup_password_edittext);
+        confirm_Password = findViewById(R.id.signup_confirm_password_edittext);
+
+        signup_btn = findViewById(R.id.signup_btn);
 
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,9 +54,13 @@ public class SignUpActivity extends AppCompatActivity {
                 userEntity.setConfirmPassword(confirm_Password.getText().toString());
 
 
+
                 if (!validationInput(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Fill All Fields", Toast.LENGTH_SHORT).show();
-                } else if (!isValidEmail(userEntity)) {
+
+                }
+
+                else if (!isValidEmail(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
                 } else if (!checkPassword(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Please enter the same passwords", Toast.LENGTH_SHORT).show();
@@ -59,32 +68,68 @@ public class SignUpActivity extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            if(!Emailcheck(userEntity, userDatabase, userDao))
+                            {
+                                Log.d("error", "registration error");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(SignUpActivity.this, "This Email is Already Used", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                });
+
+
+                            }else
+                            {
+                                userDao.registerUser(userEntity);
+
+                                UserEntity userEntity1 = userDao.login(userEntity.getEmail(), userEntity.getPassword());
+                                userEntity1.setIs_logged(true);
+                                userDao.updateProfile(userEntity1);
+
+
+
+
+                                SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putInt("id",userEntity1.getId());
+                                editor.putString("name", userEntity1.getUserName());
+                                editor.putString("name", userEntity1.getUserName());
+                                editor.putString("email", userEntity1.getEmail());
+                                editor.putString("password", userEntity1.getPassword());
+                                editor.putBoolean("is_user_logged_in", true);
+
+                                editor.apply();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //Toast.makeText(getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SignUpActivity.this, OnboardingActivity.class);
+                                        startActivity(intent);
+
+                                    }
+                                });
+                            }
                             // Register User
-                            userDao.registerUser(userEntity);
 
-                            UserEntity userEntity1 = userDao.login(userEntity.getEmail(), userEntity.getPassword());
-                            userEntity1.setIs_logged(true);
-                            userDao.updateProfile(userEntity1);
 
-                            SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putInt("id", userEntity1.getId());
-                            editor.putString("name", userEntity1.getUserName());
-                            editor.putString("name", userEntity1.getUserName());
-                            editor.putString("email", userEntity1.getEmail());
-                            editor.putString("password", userEntity1.getPassword());
-                            editor.putBoolean("is_user_logged_in", true);
 
-                            editor.apply();
-                            //Toast.makeText(getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignUpActivity.this, OnboardingActivity.class);
-                            startActivity(intent);
                         }
+
+
                     }).start();
+
                 }
             }
+
+
+            //  }
+
         });
 
+        login_txt = findViewById(R.id.login_txt);
         login_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,15 +137,6 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
-    }
-
-    private void findView() {
-        userName = findViewById(R.id.signup_username_edittext);
-        Email = findViewById(R.id.signup_email_edittext);
-        Password = findViewById(R.id.signup_password_edittext);
-        confirm_Password = findViewById(R.id.signup_confirm_password_edittext);
-        login_txt = findViewById(R.id.login_txt);
-        signup_btn = findViewById(R.id.signup_btn);
     }
 
     private Boolean validationInput(UserEntity userEntity) {
@@ -123,19 +159,19 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-//    private static  boolean Emailcheck(UserEntity userEntity,AppDatabase userDatabase, UserDao userDao)
-//    {
-//
-//        userEntity = userDao.checkEmail(userEntity.getEmail());
-//        if(userEntity != null)
-//        {
-//            return false;
-//        }
-//
-//          return  true;
-//
-//
-//    }
+    private static  boolean Emailcheck(UserEntity userEntity,AppDatabase userDatabase, UserDao userDao)
+    {
+
+        userEntity = userDao.checkEmail(userEntity.getEmail());
+        if(userEntity != null)
+        {
+            return false;
+        }
+
+        return  true;
+
+
+    }
 
     private static boolean checkPassword(UserEntity userEntity) {
         if (!Objects.equals(userEntity.getPassword(), userEntity.getConfirmPassword())) {

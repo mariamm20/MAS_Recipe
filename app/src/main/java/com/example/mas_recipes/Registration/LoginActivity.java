@@ -53,7 +53,15 @@ public class LoginActivity extends AppCompatActivity {
                         public void run() {
                             UserEntity userEntity = userDao.login(emailText, passwordText);
                             if (userEntity == null) {
-                                Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                                Log.d("login error", "invalid credentials");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+                                });
 
                             } else {
                                 userEntity.setIs_logged(true);
@@ -75,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     }).start();
+
+
                 }
             }
         });
