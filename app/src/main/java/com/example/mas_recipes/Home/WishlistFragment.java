@@ -1,36 +1,48 @@
 package com.example.mas_recipes.Home;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.mas_recipes.Adapter.WishlistRecyclerViewAdapter;
-import com.example.mas_recipes.Items.RecipeItem;
+import com.example.mas_recipes.API.Listeners.RandomRecipesResponseListener;
+import com.example.mas_recipes.API.Listeners.RecipeClickListener;
+import com.example.mas_recipes.API.Models.RandomRecipesApiResponse;
+import com.example.mas_recipes.API.RequestManager;
+import com.example.mas_recipes.Adapter.RandomRecipesAdapter;
+import com.example.mas_recipes.Adapter.WishlistAdapter;
 import com.example.mas_recipes.R;
+import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
+import com.example.mas_recipes.RoomDatabase.AppDatabase;
+import com.example.mas_recipes.RoomDatabase.WishlistEntity;
+import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WishlistFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class WishlistFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -38,15 +50,6 @@ public class WishlistFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WishlistFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static WishlistFragment newInstance(String param1, String param2) {
         WishlistFragment fragment = new WishlistFragment();
         Bundle args = new Bundle();
@@ -66,33 +69,62 @@ public class WishlistFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_wishlist, container, false);
     }
-    
-    RecyclerView rv_favourite_recipes;
+
+    WishlistAdapter wishlistAdapter;
+    RecyclerView rv_wishlist_recipes;
+    List<WishlistEntity> wishlistEntities;
+    WishlistViewModel wishlistViewModel;
+    int user_id;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rv_favourite_recipes = view.findViewById(R.id.rv_favourite_recipes);
+        rv_wishlist_recipes = view.findViewById(R.id.rv_wishlist_recipes);
 
-        ArrayList<RecipeItem> Recipies = new ArrayList<>();
-        Recipies.add(new RecipeItem(R.drawable.burger,"Smashed Burger","4.5","1"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"Beef Burger","5.0","2"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"Chicken Burger","3.2","4"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"Cheese Burger","1.4","6"));
-        Recipies.add(new RecipeItem(R.drawable.burger,"KFC Burger","4.0","3"));
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
-        WishlistRecyclerViewAdapter adapter = new WishlistRecyclerViewAdapter(getContext(),Recipies);
-        rv_favourite_recipes.setLayoutManager(lm);
-        rv_favourite_recipes.setHasFixedSize(true);
-        rv_favourite_recipes.setAdapter(adapter);
+        //user_id
+        SharedPreferences pref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        user_id = pref.getInt("id", -1);
+        Log.d("user_id", String.valueOf(user_id));
 
+        wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
+        loadWishlistData();
     }
+
+    private void loadWishlistData() {
+        rv_wishlist_recipes.setHasFixedSize(true);
+        rv_wishlist_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        wishlistEntities = new ArrayList<>();
+        wishlistAdapter = new WishlistAdapter(getContext(), wishlistEntities, recipeClickListener,wishlistViewModel, user_id);
+        rv_wishlist_recipes.setAdapter(wishlistAdapter);
+
+        WishlistViewModel viewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
+        viewModel.getWishlistItemByUserID(user_id).observe(getViewLifecycleOwner(), new Observer<List<WishlistEntity>>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(List<WishlistEntity> entities) {
+                wishlistEntities.clear();
+                wishlistEntities.addAll(entities);
+                wishlistAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+
+    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
+        @Override
+        public void onRecipeClicked(String id) {
+            startActivity(new Intent(getContext(), RecipeDetailsActivity.class)
+                    .putExtra("id", id));
+
+//            Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
+            Log.d("Recipe ID", id);
+        }
+    };
+
 
 }

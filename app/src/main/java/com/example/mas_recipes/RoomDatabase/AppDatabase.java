@@ -6,7 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {UserEntity.class, WishlistEntity.class}, version = 3)
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Database(entities = {UserEntity.class, WishlistEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "recipe_db";
@@ -15,6 +18,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 
     public abstract WishlistDao wishlistDao();
+
+    public static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {

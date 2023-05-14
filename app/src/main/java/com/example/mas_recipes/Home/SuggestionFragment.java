@@ -1,14 +1,18 @@
 package com.example.mas_recipes.Home;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +32,8 @@ import com.example.mas_recipes.API.RequestManager;
 import com.example.mas_recipes.Adapter.RandomRecipesAdapter;
 import com.example.mas_recipes.R;
 import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
+import com.example.mas_recipes.RoomDatabase.AppDatabase;
+import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +88,9 @@ public class SuggestionFragment extends Fragment {
 
     List<String> tags = new ArrayList<>();
 
+    WishlistViewModel wishlistViewModel;
+    int user_id;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -99,6 +108,12 @@ public class SuggestionFragment extends Fragment {
         autoComplete_suggestion.setAdapter(adapter_suggestions);
         autoComplete_suggestion.setOnItemClickListener(clickListener);
 
+        wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
+
+        SharedPreferences pref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        user_id = pref.getInt("id", -1);
+        Log.d("user_id", String.valueOf(user_id));
+
         manager = new RequestManager(getContext());
 
 
@@ -110,7 +125,7 @@ public class SuggestionFragment extends Fragment {
             dialog.dismiss();
             rv_suggested_recipes.setHasFixedSize(true);
             rv_suggested_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener);
+            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, user_id);
             rv_suggested_recipes.setAdapter(randomRecipesAdapter);
         }
 
@@ -142,8 +157,6 @@ public class SuggestionFragment extends Fragment {
         public void onRecipeClicked(String id) {
             startActivity(new Intent(getContext(), RecipeDetailsActivity.class)
                     .putExtra("id", id));
-
-            Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
             Log.d("Recipe ID", id);
         }
     };

@@ -1,6 +1,11 @@
 package com.example.mas_recipes.API;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import androidx.room.Room;
 
 import com.example.mas_recipes.API.Listeners.InstructionsListener;
 import com.example.mas_recipes.API.Listeners.RandomRecipesResponseListener;
@@ -8,11 +13,19 @@ import com.example.mas_recipes.API.Listeners.RecipeDetailsListener;
 import com.example.mas_recipes.API.Listeners.SimilarRecipesListener;
 import com.example.mas_recipes.API.Models.InstructionsResponse;
 import com.example.mas_recipes.API.Models.RandomRecipesApiResponse;
+import com.example.mas_recipes.API.Models.Recipe;
 import com.example.mas_recipes.API.Models.RecipeDetailsResponse;
 import com.example.mas_recipes.API.Models.SimilarRecipesResponse;
+import com.example.mas_recipes.Home.WishlistFragment;
 import com.example.mas_recipes.R;
+import com.example.mas_recipes.RoomDatabase.AppDatabase;
+import com.example.mas_recipes.RoomDatabase.WishlistEntity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,9 +42,12 @@ public class RequestManager {
             .baseUrl("https://api.spoonacular.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+    AppDatabase db;
 
     public RequestManager(Context context) {
         this.context = context;
+        db = Room.databaseBuilder(context, AppDatabase.class, "recipe_db")
+                .allowMainThreadQueries().build();
     }
 
     public void getRandomRecipes(RandomRecipesResponseListener listener) {
@@ -133,6 +149,51 @@ public class RequestManager {
         });
     }
 
+//    public void getWishlistRecipes(RandomRecipesResponseListener listener, int user_id) {
+//
+//        List<WishlistEntity> wishlistEntities = db.wishlistDao().getWishlistItemByUserID(user_id);
+//        // Create a set of recipe IDs in the wishlist for efficient lookup
+//        Set<Integer> wishlistRecipeIds = new HashSet<>();
+//        for (WishlistEntity wishlistEntity : wishlistEntities) {
+//            wishlistRecipeIds.add(wishlistEntity.getRecipe_id());
+//        }
+//        for (Integer recipeId : wishlistRecipeIds) {
+//            Log.d("WishlistAdapter", "Recipe ID: " + recipeId);
+//        }
+//
+//        CallWishlistRecipes callWishlistRecipes = retrofit.create(CallWishlistRecipes.class);
+//        Call<RandomRecipesApiResponse> call = callWishlistRecipes.callRandomRecipes(context.getString(R.string.api_key));
+//        call.enqueue(new Callback<RandomRecipesApiResponse>() {
+//            @Override
+//            public void onResponse(Call<RandomRecipesApiResponse> call, Response<RandomRecipesApiResponse> response) {
+//                if (!response.isSuccessful()) {
+//                    listener.didError(response.message());
+//                }
+//
+//
+//                // Filter the list of recipes based on the set of recipe IDs in the wishlist
+//                ArrayList<Recipe> wishlistRecipes = new ArrayList<>();
+//                RandomRecipesApiResponse apiResponse = response.body();
+//                List<Recipe> recipes = apiResponse.getRecipes();
+//                for (Recipe recipe : apiResponse.getRecipes()) {
+//                    if (wishlistRecipeIds.contains(recipe.getId())) {
+//                        wishlistRecipes.add(recipe);
+//                    }
+//                }
+//
+//                listener.didFetch(new RandomRecipesApiResponse(wishlistRecipes), response.message());
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RandomRecipesApiResponse> call, Throwable t) {
+//                listener.didError(t.getMessage());
+//            }
+//        });
+//
+//
+//
+//    }
 
     //----interfaces----------
     private interface CallRandomRecipes {
@@ -176,6 +237,13 @@ public class RequestManager {
                 @Query("tags") List<String> tags
         );
     }
+
+//    private interface CallWishlistRecipes {
+//        @GET("recipes/random")
+//        Call<RandomRecipesApiResponse> callRandomRecipes(
+//                @Query("apiKey") String apiKey
+//        );
+//    }
 
 
 }

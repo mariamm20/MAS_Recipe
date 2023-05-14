@@ -33,12 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        userName = findViewById(R.id.signup_username_edittext);
-        Email = findViewById(R.id.signup_email_edittext);
-        Password = findViewById(R.id.signup_password_edittext);
-        confirm_Password = findViewById(R.id.signup_confirm_password_edittext);
-
-        signup_btn = findViewById(R.id.signup_btn);
+        findView();
 
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,10 +49,8 @@ public class SignUpActivity extends AppCompatActivity {
                 userEntity.setConfirmPassword(confirm_Password.getText().toString());
 
 
-
                 if (!validationInput(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Fill All Fields", Toast.LENGTH_SHORT).show();
-
                 } else if (!isValidEmail(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Please Enter a Valid Email", Toast.LENGTH_SHORT).show();
                 } else if (!checkPassword(userEntity)) {
@@ -67,19 +60,15 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             // Register User
-
                             userDao.registerUser(userEntity);
 
                             UserEntity userEntity1 = userDao.login(userEntity.getEmail(), userEntity.getPassword());
                             userEntity1.setIs_logged(true);
                             userDao.updateProfile(userEntity1);
 
-
-
-
                             SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
-                            editor.putInt("id",userEntity1.getId());
+                            editor.putInt("id", userEntity1.getId());
                             editor.putString("name", userEntity1.getUserName());
                             editor.putString("name", userEntity1.getUserName());
                             editor.putString("email", userEntity1.getEmail());
@@ -87,29 +76,15 @@ public class SignUpActivity extends AppCompatActivity {
                             editor.putBoolean("is_user_logged_in", true);
 
                             editor.apply();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //Toast.makeText(getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(SignUpActivity.this, OnboardingActivity.class);
-                                    startActivity(intent);
-
-                                }
-                            });
-
+                            //Toast.makeText(getApplicationContext(), "User Registered", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignUpActivity.this, OnboardingActivity.class);
+                            startActivity(intent);
                         }
-
-
                     }).start();
                 }
             }
-
-
-            //  }
-
         });
 
-        login_txt = findViewById(R.id.login_txt);
         login_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,6 +92,15 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
+    }
+
+    private void findView() {
+        userName = findViewById(R.id.signup_username_edittext);
+        Email = findViewById(R.id.signup_email_edittext);
+        Password = findViewById(R.id.signup_password_edittext);
+        confirm_Password = findViewById(R.id.signup_confirm_password_edittext);
+        login_txt = findViewById(R.id.login_txt);
+        signup_btn = findViewById(R.id.signup_btn);
     }
 
     private Boolean validationInput(UserEntity userEntity) {

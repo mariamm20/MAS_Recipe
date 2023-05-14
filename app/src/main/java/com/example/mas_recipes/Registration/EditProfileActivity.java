@@ -44,9 +44,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 AppDatabase.class, "recipe_db").allowMainThreadQueries().build();
 
         SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        name = findViewById(R.id.edit_profile_username_edittext);
-        email = findViewById(R.id.edit_profile_email_edittext);
-        password = findViewById(R.id.edit_profile_password_edittext);
 
         String Name =pref.getString("name", "user name");
         String Email = pref.getString("email", "email");
@@ -127,25 +124,25 @@ public class EditProfileActivity extends AppCompatActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                        // update code here
-                        AppDatabase userDatabase = AppDatabase.getInstance(getApplicationContext());
-                        final UserDao userDao = userDatabase.userDao();
-                        UserEntity userEntity = userDao.getProfileById(user_id);
+                                // update code here
+                                AppDatabase userDatabase = AppDatabase.getInstance(getApplicationContext());
+                                final UserDao userDao = userDatabase.userDao();
+                                UserEntity userEntity = userDao.getProfileById(user_id);
 
-                        userEntity.setUserName(name.getText().toString());
-                        userEntity.setEmail(email.getText().toString());
-                        userEntity.setPassword(password.getText().toString());
-                        userDao.updateProfile(userEntity);
-                        UserEntity userEntity1 = userDao.getProfileById(user_id);
-                        SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putInt("id", userEntity1.getId());
-                        editor.putString("name", userEntity1.getUserName());
-                        editor.putString("email", userEntity1.getEmail());
-                        editor.putString("password", userEntity1.getPassword());
-                        editor.putBoolean("is_user_logged_in", true);
+                                userEntity.setUserName(name.getText().toString());
+                                userEntity.setEmail(email.getText().toString());
+                                userEntity.setPassword(password.getText().toString());
+                                userDao.updateProfile(userEntity);
+                                UserEntity userEntity1 = userDao.getProfileById(user_id);
+                                SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putInt("id", userEntity1.getId());
+                                editor.putString("name", userEntity1.getUserName());
+                                editor.putString("email", userEntity1.getEmail());
+                                editor.putString("password", userEntity1.getPassword());
+                                editor.putBoolean("is_user_logged_in", true);
 
-                        editor.apply();
+                                editor.apply();
                                 Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
                                 startActivity(intent);
 
@@ -170,11 +167,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
 
-}
+    }
 
     private void findView() {
         edit_profile_back_btn = findViewById(R.id.edit_profile_back_btn);
         edit_profile_btn = findViewById(R.id.edit_profile_btn);
         logout_txt = findViewById(R.id.logout_txt);
+        name = findViewById(R.id.edit_profile_username_edittext);
+        email = findViewById(R.id.edit_profile_email_edittext);
+        password = findViewById(R.id.edit_profile_password_edittext);
     }
 }

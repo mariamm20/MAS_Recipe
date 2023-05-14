@@ -30,10 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        email = findViewById(R.id.login_email_edittext);
-        password = findViewById(R.id.login_password_edittext);
+        findViews();
 
-        login_btn = findViewById(R.id.login_btn);
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,13 +53,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void run() {
                             UserEntity userEntity = userDao.login(emailText, passwordText);
                             if (userEntity == null) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
 
-                                    }
-                                });
                             } else {
                                 userEntity.setIs_logged(true);
                                 userDao.updateProfile(userEntity);
@@ -86,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        signup_txt = findViewById(R.id.signup_txt);
         signup_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        forgot_password_txt = findViewById(R.id.forgot_password_txt);
         forgot_password_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +95,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void findViews() {
+        email = findViewById(R.id.login_email_edittext);
+        password = findViewById(R.id.login_password_edittext);
+        login_btn = findViewById(R.id.login_btn);
+        signup_txt = findViewById(R.id.signup_txt);
+        forgot_password_txt = findViewById(R.id.forgot_password_txt);
     }
 }

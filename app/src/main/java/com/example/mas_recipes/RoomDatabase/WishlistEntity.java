@@ -15,13 +15,20 @@ public class WishlistEntity {
     @ColumnInfo(name = "recipe_id")
     private int recipe_id;
 
-    public WishlistEntity() {
-    }
+    @ColumnInfo(name = "title")
+    private String title;
 
-    public WishlistEntity(int user_id, int recipe_id) {
-        this.user_id = user_id;
-        this.recipe_id = recipe_id;
-    }
+    @ColumnInfo(name = "image")
+    private String image;
+
+    @ColumnInfo(name = "servings")
+    private int servings;
+
+    @ColumnInfo(name = "readyInMinutes")
+    private int readyInMinutes;
+
+
+    public WishlistEntity() {}
 
     public int getId() {
         return id;
@@ -45,5 +52,37 @@ public class WishlistEntity {
 
     public void setRecipe_id(int recipe_id) {
         this.recipe_id = recipe_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public int getReadyInMinutes() {
+        return readyInMinutes;
+    }
+
+    public void setReadyInMinutes(int readyInMinutes) {
+        this.readyInMinutes = readyInMinutes;
     }
 }

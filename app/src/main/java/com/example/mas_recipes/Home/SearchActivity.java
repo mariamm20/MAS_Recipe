@@ -2,13 +2,16 @@ package com.example.mas_recipes.Home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,12 +26,14 @@ import com.example.mas_recipes.API.RequestManager;
 import com.example.mas_recipes.Adapter.RandomRecipesAdapter;
 import com.example.mas_recipes.R;
 import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
+import com.example.mas_recipes.RoomDatabase.AppDatabase;
+import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
-    
+
     ImageButton back_btn2;
     ProgressDialog dialog;
     RequestManager manager;
@@ -36,6 +41,9 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView rv_search_recipes;
     SearchView searchView;
     List<String> tags = new ArrayList<>();
+
+    WishlistViewModel wishlistViewModel;
+    int user_id;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -61,13 +69,13 @@ public class SearchActivity extends AppCompatActivity {
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
-                if(query != null){
+                if (query != null) {
                     tags.clear();
                     tags.add(query);
                     manager.getSuggestedRecipes(randomRecipesResponseListener, tags);
                     dialog.show();
                     return true;
-                }else{
+                } else {
                     tags.clear();
                     dialog.dismiss();
                     return false;
@@ -81,6 +89,12 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
+
+        SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        user_id = pref.getInt("id", -1);
+        Log.d("user_id", String.valueOf(user_id));
+
         manager = new RequestManager(this);
     }
 
@@ -91,7 +105,7 @@ public class SearchActivity extends AppCompatActivity {
             rv_search_recipes = findViewById(R.id.rv_search_recipes);
             rv_search_recipes.setHasFixedSize(true);
             rv_search_recipes.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener);
+            randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener, wishlistViewModel, user_id);
             rv_search_recipes.setAdapter(randomRecipesAdapter);
         }
 
@@ -108,8 +122,6 @@ public class SearchActivity extends AppCompatActivity {
         public void onRecipeClicked(String id) {
             startActivity(new Intent(SearchActivity.this, RecipeDetailsActivity.class)
                     .putExtra("id", id));
-
-            Toast.makeText(SearchActivity.this, id, Toast.LENGTH_SHORT).show();
             Log.d("Recipe ID", id);
         }
     };
