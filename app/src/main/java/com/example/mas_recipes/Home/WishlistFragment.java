@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mas_recipes.API.Listeners.RandomRecipesResponseListener;
@@ -36,6 +37,7 @@ import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class WishlistFragment extends Fragment {
@@ -73,6 +75,7 @@ public class WishlistFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_wishlist, container, false);
     }
 
+    TextView txt_wishlist_count;
     WishlistAdapter wishlistAdapter;
     RecyclerView rv_wishlist_recipes;
     List<WishlistEntity> wishlistEntities;
@@ -84,6 +87,7 @@ public class WishlistFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rv_wishlist_recipes = view.findViewById(R.id.rv_wishlist_recipes);
+        txt_wishlist_count = view.findViewById(R.id.txt_wishlist_count);
 
         //user_id
         SharedPreferences pref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -92,6 +96,15 @@ public class WishlistFragment extends Fragment {
 
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
+        wishlistViewModel.getCount(user_id).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer count) {
+                // Update the UI with the new count
+                txt_wishlist_count.setText("Favourite Recipes (" + count + ")");
+                Log.d("wishlist_count", String.valueOf(count));
+            }
+        });
+
         loadWishlistData();
     }
 
@@ -99,7 +112,7 @@ public class WishlistFragment extends Fragment {
         rv_wishlist_recipes.setHasFixedSize(true);
         rv_wishlist_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         wishlistEntities = new ArrayList<>();
-        wishlistAdapter = new WishlistAdapter(getContext(), wishlistEntities, recipeClickListener,wishlistViewModel, user_id);
+        wishlistAdapter = new WishlistAdapter(getContext(), wishlistEntities, recipeClickListener, wishlistViewModel, user_id);
         rv_wishlist_recipes.setAdapter(wishlistAdapter);
 
         WishlistViewModel viewModel = new ViewModelProvider(this).get(WishlistViewModel.class);

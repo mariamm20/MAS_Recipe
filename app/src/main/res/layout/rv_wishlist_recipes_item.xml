@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:gravity="left"
         android:padding="16dp">
 
         <androidx.cardview.widget.CardView
@@ -31,7 +32,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="270dp"
+            android:layout_width="290dp"
             android:layout_height="match_parent">
 
             <TextView
@@ -109,7 +110,7 @@
                 android:id="@+id/wishlist_checkbox"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="32dp"
                 android:button="@null"
                 android:drawableTop="@drawable/wishlist_selector"
                 android:textSize="12sp"

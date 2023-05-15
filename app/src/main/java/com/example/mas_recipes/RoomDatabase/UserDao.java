@@ -20,12 +20,16 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE id = :profileId")
     UserEntity getProfileById(int profileId);
+
     @Update
     void updateProfile(UserEntity userEntity);
+
     @Query("UPDATE users SET is_logged = 0 WHERE id = :userId")
     void logout(int userId);
+
     @Query("SELECT * from users where email = (:email)")
     UserEntity email(String email);
+
     @Query("UPDATE users SET password = :newpassword and confirmPassword = :newconfirmPassword WHERE id = :userId")
-    void updatePassword(String newpassword, String newconfirmPassword,  int userId);
-    }
+    void updatePassword(String newpassword, String newconfirmPassword, int userId);
+}

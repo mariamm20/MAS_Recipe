@@ -1,6 +1,7 @@
 package com.example.mas_recipes.Home;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,6 +91,7 @@ public class HomeFragment extends Fragment {
     WishlistViewModel wishlistViewModel;
     int user_id;
 
+    LifecycleOwner lifecycleOwner;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -100,7 +103,6 @@ public class HomeFragment extends Fragment {
         reload_btn = view.findViewById(R.id.reload_btn);
         tv_id = view.findViewById(R.id.tv_id);
 
-
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("Loading Recipes...");
 
@@ -111,7 +113,7 @@ public class HomeFragment extends Fragment {
         Log.d("user_id", String.valueOf(user_id));
         tv_id.setText("Hello, " +name);
 
-
+        lifecycleOwner = this;
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
         manager = new RequestManager(getContext());
@@ -151,7 +153,7 @@ public class HomeFragment extends Fragment {
             dialog.dismiss();
             rv_random_recipes.setHasFixedSize(true);
             rv_random_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, user_id);
+            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel,lifecycleOwner, user_id);
             rv_random_recipes.setAdapter(randomRecipesAdapter);
         }
 

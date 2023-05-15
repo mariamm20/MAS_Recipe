@@ -2,6 +2,7 @@ package com.example.mas_recipes.Home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,8 @@ public class SearchActivity extends AppCompatActivity {
 
     WishlistViewModel wishlistViewModel;
     int user_id;
+
+    LifecycleOwner lifecycleOwner;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -89,6 +92,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        lifecycleOwner = this;
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
         SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -105,7 +109,7 @@ public class SearchActivity extends AppCompatActivity {
             rv_search_recipes = findViewById(R.id.rv_search_recipes);
             rv_search_recipes.setHasFixedSize(true);
             rv_search_recipes.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener, wishlistViewModel, user_id);
+            randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
             rv_search_recipes.setAdapter(randomRecipesAdapter);
         }
 

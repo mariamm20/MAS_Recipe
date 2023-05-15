@@ -34,8 +34,15 @@ public class WishlistViewModel extends AndroidViewModel {
         return wishlistRepository.getWishlistItemByUserID(user_id);
     }
 
+    public LiveData<List<WishlistEntity>> getLiveWishlistItem(int user_id, int recipe_id) {
+        return wishlistRepository.getLiveWishlistItem(user_id, recipe_id);
+    }
 
-    public void delete(int id) {
-        wishlistRepository.delete(id);
+    public LiveData<Integer> getCount(int user_id) {
+        return wishlistRepository.getCount(user_id);
+    }
+
+    public void delete(int user_id, int recipe_id) {
+        wishlistRepository.delete(user_id, recipe_id);
     }
 }

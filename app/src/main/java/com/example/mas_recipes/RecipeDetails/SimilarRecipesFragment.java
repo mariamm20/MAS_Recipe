@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +75,8 @@ public class SimilarRecipesFragment extends Fragment {
     WishlistViewModel wishlistViewModel;
     int user_id;
 
+    LifecycleOwner lifecycleOwner;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,6 +86,7 @@ public class SimilarRecipesFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         id = Integer.parseInt(intent.getStringExtra("id"));
 
+        lifecycleOwner = this;
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
         //user_id
@@ -102,7 +106,7 @@ public class SimilarRecipesFragment extends Fragment {
         public void didFetch(List<SimilarRecipesResponse> response, String msg) {
             rv_similar_recipes.setHasFixedSize(true);
             rv_similar_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            similarRecipesAdapter = new SimilarRecipesAdapter(getContext(), response, recipeClickListener, wishlistViewModel, user_id);
+            similarRecipesAdapter = new SimilarRecipesAdapter(getContext(), response, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
             rv_similar_recipes.setAdapter(similarRecipesAdapter);
         }
 

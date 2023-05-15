@@ -26,7 +26,7 @@ import java.util.Objects;
 public class ForgetPasswordActivity extends AppCompatActivity {
 
     Button reset_link_btn;
-    EditText email, password,confirm_password;
+    EditText email, password, confirm_password;
     TextView signup_txt2;
 
     @SuppressLint("MissingInflatedId")
@@ -57,56 +57,52 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 if (!validationInput(userEntity)) {
                     Toast.makeText(getApplicationContext(), "Fill All Fields", Toast.LENGTH_SHORT).show();
 
-                }
-                  else if (!checkPassword(userEntity)) {
-                Toast.makeText(getApplicationContext(), "Please enter the same passwords", Toast.LENGTH_SHORT).show();
-            } else {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(!Emailcheck(userEntity, userDatabase, userDao))
-                        {
-                            Log.d("error", "not found");
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(ForgetPasswordActivity.this, "This Email is not Existed", Toast.LENGTH_SHORT).show();
+                } else if (!checkPassword(userEntity)) {
+                    Toast.makeText(getApplicationContext(), "Please enter the same passwords", Toast.LENGTH_SHORT).show();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!Emailcheck(userEntity, userDatabase, userDao)) {
+                                Log.d("error", "not found");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(ForgetPasswordActivity.this, "This Email is not Existed", Toast.LENGTH_SHORT).show();
 
 
-                                }
-                            });
+                                    }
+                                });
 
 
-                        }else
-                        {
-                            SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                            UserEntity user = userDao.email(userEntity.getEmail());
-                            Log.d("passworddddddddd", user.getId().toString());
-                            UserEntity userEntity1 = userDao.getProfileById(user.getId());
-                            userEntity1.setPassword(passwordText);
-                            userEntity1.setConfirmPassword(confirmPasswordText);
-                            userDao.updateProfile(userEntity1);
+                            } else {
+                                SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                UserEntity user = userDao.email(userEntity.getEmail());
+                                Log.d("passworddddddddd", user.getId().toString());
+                                UserEntity userEntity1 = userDao.getProfileById(user.getId());
+                                userEntity1.setPassword(passwordText);
+                                userEntity1.setConfirmPassword(confirmPasswordText);
+                                userDao.updateProfile(userEntity1);
 
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(ForgetPasswordActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
-                                    startActivity(intent);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(ForgetPasswordActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
+                                        startActivity(intent);
 
-                                }
-                            });
+                                    }
+                                });
+                            }
+
+
                         }
 
 
-                    }
+                    }).start();
 
-
-                }).start();
-
-            }
-
+                }
 
 
             }
@@ -121,28 +117,29 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             }
         });
     }
-    private static  boolean Emailcheck(UserEntity userEntity, AppDatabase userDatabase, UserDao userDao)
-    {
+
+    private static boolean Emailcheck(UserEntity userEntity, AppDatabase userDatabase, UserDao userDao) {
 
         userEntity = userDao.checkEmail(userEntity.getEmail());
-        if(userEntity == null)
-        {
+        if (userEntity == null) {
             return false;
         }
 
-        return  true;
+        return true;
 
 
     }
+
     private Boolean validationInput(UserEntity userEntity) {
         if (
                 userEntity.getEmail().isEmpty() ||
-                userEntity.getPassword().isEmpty() ||
-                userEntity.getConfirmPassword().isEmpty()) {
+                        userEntity.getPassword().isEmpty() ||
+                        userEntity.getConfirmPassword().isEmpty()) {
             return false;
         }
         return true;
     }
+
     private static boolean checkPassword(UserEntity userEntity) {
         if (!Objects.equals(userEntity.getPassword(), userEntity.getConfirmPassword())) {
             return false;

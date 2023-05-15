@@ -1,6 +1,7 @@
 package com.example.mas_recipes.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -17,11 +18,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mas_recipes.API.Listeners.RecipeClickListener;
 import com.example.mas_recipes.API.Models.SimilarRecipesResponse;
 import com.example.mas_recipes.R;
+import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
 import com.example.mas_recipes.RoomDatabase.WishlistEntity;
 import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 import com.squareup.picasso.Picasso;
@@ -36,17 +40,19 @@ public class SimilarRecipesAdapter extends RecyclerView.Adapter<SimilarRecipesAd
     WishlistViewModel wishlistViewModel;
 
     int user_id;
-    SharedPreferences sharedPreferences_checkbox;
-    public static final String CHECKBOX_PREFERENCES = "Checkbox_Pref";
-    public static final String WISHLIST_CHECKBOX_STATE_KEY = "wishlist_checkbox_state";
+    LifecycleOwner lifecycleOwner;
+//    SharedPreferences sharedPreferences_checkbox;
+//    public static final String CHECKBOX_PREFERENCES = "Checkbox_Pref";
+//    public static final String WISHLIST_CHECKBOX_STATE_KEY = "wishlist_checkbox_state";
 
-    public SimilarRecipesAdapter(Context context, List<SimilarRecipesResponse> similarRecipesList, RecipeClickListener listener, WishlistViewModel wishlistViewModel, int user_id) {
+    public SimilarRecipesAdapter(Context context, List<SimilarRecipesResponse> similarRecipesList, RecipeClickListener listener, WishlistViewModel wishlistViewModel, LifecycleOwner lifecycleOwner, int user_id) {
         this.context = context;
         this.similarRecipesList = similarRecipesList;
         this.listener = listener;
-        this.wishlistViewModel= wishlistViewModel;
+        this.wishlistViewModel = wishlistViewModel;
+        this.lifecycleOwner = lifecycleOwner;
         this.user_id = user_id;
-        this.sharedPreferences_checkbox = context.getSharedPreferences(CHECKBOX_PREFERENCES, Context.MODE_PRIVATE);
+//        this.sharedPreferences_checkbox = context.getSharedPreferences(CHECKBOX_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -75,8 +81,19 @@ public class SimilarRecipesAdapter extends RecyclerView.Adapter<SimilarRecipesAd
         });
 
         // check if the recipe is in the wishlist
-        boolean isChecked = sharedPreferences_checkbox.getBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + similarRecipesList.get(position).id, false);
-        holder.similar_recipes_checkbox.setChecked(isChecked);
+//        boolean isChecked = sharedPreferences_checkbox.getBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + similarRecipesList.get(position).id, false);
+//        holder.similar_recipes_checkbox.setChecked(isChecked);
+
+        wishlistViewModel.getLiveWishlistItem(user_id, similarRecipesList.get(position).id).observe(lifecycleOwner, new Observer<List<WishlistEntity>>() {
+            @Override
+            public void onChanged(List<WishlistEntity> wishlistEntities) {
+                if (wishlistEntities != null && !wishlistEntities.isEmpty()) {
+                    holder.similar_recipes_checkbox.setChecked(true);
+                } else {
+                    holder.similar_recipes_checkbox.setChecked(false);
+                }
+            }
+        });
 
         holder.similar_recipes_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,20 +112,38 @@ public class SimilarRecipesAdapter extends RecyclerView.Adapter<SimilarRecipesAd
 
                 wishlistEntity.setUser_id(user_id);
 
-                if (isChecked) {
-                    // add the recipe to the wishlist
-                    wishlistViewModel.insert(wishlistEntity);
-                    Toast.makeText(context, "Recipe added to wishlist", Toast.LENGTH_SHORT).show();
-                    Log.d("Add to wishlist", "Recipe added to wishlist");
 
-                } else {
+                if (isChecked) { //true
+                    // check if the recipe is already in the wishlist
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            WishlistEntity existingItem = wishlistViewModel.getWishlistItem(user_id, similarRecipesList.get(position).id);
+                            if (existingItem != null) {
+                                Log.d("Add to wishlist", "Recipe already in wishlist");
+
+                            } else {
+                                ((Activity) context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // add the recipe to the wishlist
+                                        wishlistViewModel.insert(wishlistEntity);
+                                        Toast.makeText(context, "Recipe added to wishlist", Toast.LENGTH_SHORT).show();
+                                        Log.d("Add to wishlist", "Recipe added to wishlist");
+
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
+                } else { //false
                     // remove the recipe from the wishlist
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             WishlistEntity existingItem = wishlistViewModel.getWishlistItem(user_id, similarRecipesList.get(position).id);
                             if (existingItem != null) {
-                                wishlistViewModel.delete(existingItem.getId());
+                                wishlistViewModel.delete(user_id, similarRecipesList.get(position).id);
                             }
                         }
                     }).start();
@@ -117,7 +152,7 @@ public class SimilarRecipesAdapter extends RecyclerView.Adapter<SimilarRecipesAd
                 }
 
                 // update the state of the checkbox in shared preferences
-                sharedPreferences_checkbox.edit().putBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + similarRecipesList.get(position).id, isChecked).apply();
+//                sharedPreferences_checkbox.edit().putBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + similarRecipesList.get(position).id, isChecked).apply();
 
             }
         });

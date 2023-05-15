@@ -32,7 +32,15 @@ public class WishlistRepository {
         return wishlistDao.getWishlistItemByUserID(user_id);
     }
 
-    public void delete(int id) {
-        AppDatabase.executorService.execute(() -> wishlistDao.delete(id));
+    public LiveData<List<WishlistEntity>> getLiveWishlistItem(int user_id, int recipe_id) {
+        return wishlistDao.getLiveWishlistItem(user_id, recipe_id);
+    }
+
+    public LiveData<Integer> getCount(int user_id) {
+        return wishlistDao.getCount(user_id);
+    }
+
+    public void delete(int user_id, int recipe_id) {
+        AppDatabase.executorService.execute(() -> wishlistDao.delete(user_id, recipe_id));
     }
 }

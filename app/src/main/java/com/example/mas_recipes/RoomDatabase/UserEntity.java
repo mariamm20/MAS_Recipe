@@ -5,19 +5,22 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
-public class UserEntity
-{
+public class UserEntity {
     @PrimaryKey(autoGenerate = true)
     Integer id;
 
     @ColumnInfo(name = "userName")
     String userName;
+
     @ColumnInfo(name = "email")
     String email;
+
     @ColumnInfo(name = "password")
     String password;
+
     @ColumnInfo(name = "confirmPassword")
     String confirmPassword;
+
     @ColumnInfo(name = "is_logged")
     Boolean is_logged;
 

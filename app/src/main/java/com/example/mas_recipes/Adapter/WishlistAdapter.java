@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mas_recipes.API.Listeners.RecipeClickListener;
@@ -41,17 +43,17 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
     WishlistViewModel wishlistViewModel;
 
     int user_id;
-    SharedPreferences sharedPreferences_checkbox;
-    public static final String CHECKBOX_PREFERENCES = "Checkbox_Pref";
-    public static final String WISHLIST_CHECKBOX_STATE_KEY = "wishlist_checkbox_state";
+//    SharedPreferences sharedPreferences_checkbox;
+//    public static final String CHECKBOX_PREFERENCES = "Checkbox_Pref";
+//    public static final String WISHLIST_CHECKBOX_STATE_KEY = "wishlist_checkbox_state";
 
-    public WishlistAdapter(Context context, List<WishlistEntity> wishlistEntities, RecipeClickListener listener,WishlistViewModel wishlistViewModel, int user_id) {
+    public WishlistAdapter(Context context, List<WishlistEntity> wishlistEntities, RecipeClickListener listener, WishlistViewModel wishlistViewModel, int user_id) {
         this.wishlistEntities = wishlistEntities;
         this.listener = listener;
         this.context = context;
         this.user_id = user_id;
         this.wishlistViewModel = wishlistViewModel;
-        this.sharedPreferences_checkbox = context.getSharedPreferences(CHECKBOX_PREFERENCES, Context.MODE_PRIVATE);
+//        this.sharedPreferences_checkbox = context.getSharedPreferences(CHECKBOX_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -77,29 +79,33 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         });
 
         // check if the recipe is in the wishlist
-        boolean isChecked = sharedPreferences_checkbox.getBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + wishlistEntities.get(position).getRecipe_id(), false);
-        holder.wishlist_checkbox.setChecked(isChecked);
+//        boolean isChecked = sharedPreferences_checkbox.getBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + wishlistEntities.get(position).getRecipe_id(), false);
+//        holder.wishlist_checkbox.setChecked(isChecked);
 
+
+        holder.wishlist_checkbox.setChecked(true);
         holder.wishlist_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            boolean isStateChanged = true;
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // remove the recipe from the wishlist
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        WishlistEntity existingItem = wishlistViewModel.getWishlistItem(user_id, wishlistEntities.get(position).getRecipe_id());
-                        if (existingItem != null) {
-                            wishlistViewModel.delete(existingItem.getId());
+                if (isStateChanged) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            wishlistViewModel.delete(user_id, wishlistEntities.get(position).getRecipe_id());
                         }
-                    }
-                }).start();
-
+                    }).start();
+                }
                 Toast.makeText(context, "Recipe removed to wishlist", Toast.LENGTH_SHORT).show();
                 Log.d("Add to wishlist", "Recipe removed to wishlist");
 
                 // update the state of the checkbox in shared preferences
-                sharedPreferences_checkbox.edit().putBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + wishlistEntities.get(position).getRecipe_id(), isChecked).apply();
+//                sharedPreferences_checkbox.edit().putBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + wishlistEntities.get(position).getRecipe_id(), isChecked).apply();
 
+                // set the isStateChanged flag to true
+                isStateChanged = false;
             }
         });
 
@@ -136,5 +142,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
             wishlist_checkbox = itemView.findViewById(R.id.wishlist_checkbox);
 
         }
+
+
     }
 }

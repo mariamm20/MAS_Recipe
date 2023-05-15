@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -91,6 +92,8 @@ public class SuggestionFragment extends Fragment {
     WishlistViewModel wishlistViewModel;
     int user_id;
 
+    LifecycleOwner lifecycleOwner;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -108,6 +111,7 @@ public class SuggestionFragment extends Fragment {
         autoComplete_suggestion.setAdapter(adapter_suggestions);
         autoComplete_suggestion.setOnItemClickListener(clickListener);
 
+        lifecycleOwner = this;
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
         SharedPreferences pref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -125,7 +129,7 @@ public class SuggestionFragment extends Fragment {
             dialog.dismiss();
             rv_suggested_recipes.setHasFixedSize(true);
             rv_suggested_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, user_id);
+            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
             rv_suggested_recipes.setAdapter(randomRecipesAdapter);
         }
 

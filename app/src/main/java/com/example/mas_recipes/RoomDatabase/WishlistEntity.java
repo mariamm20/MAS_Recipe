@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "wishlist")
 public class WishlistEntity {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -28,7 +29,8 @@ public class WishlistEntity {
     private int readyInMinutes;
 
 
-    public WishlistEntity() {}
+    public WishlistEntity() {
+    }
 
     public int getId() {
         return id;
