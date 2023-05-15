@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mas_recipes.API.Listeners.RandomRecipesResponseListener;
@@ -36,11 +38,14 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity {
 
     ImageButton back_btn2;
+    TextView txt_empty_search_recipes, txt_search_recipes;
+    ImageView img_empty_search_recipes;
+    RecyclerView rv_search_recipes;
+    SearchView searchView;
+
     ProgressDialog dialog;
     RequestManager manager;
     RandomRecipesAdapter randomRecipesAdapter;
-    RecyclerView rv_search_recipes;
-    SearchView searchView;
     List<String> tags = new ArrayList<>();
 
     WishlistViewModel wishlistViewModel;
@@ -54,7 +59,8 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        back_btn2 = findViewById(R.id.back_btn2);
+        findView();
+
         back_btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +71,6 @@ public class SearchActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading Recipes...");
 
-        searchView = findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,6 +78,10 @@ public class SearchActivity extends AppCompatActivity {
                 inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
                 if (query != null) {
+                    txt_empty_search_recipes.setVisibility(View.GONE);
+                    img_empty_search_recipes.setVisibility(View.GONE);
+                    txt_search_recipes.setVisibility(View.VISIBLE);
+                    rv_search_recipes.setVisibility(View.VISIBLE);
                     tags.clear();
                     tags.add(query);
                     manager.getSuggestedRecipes(randomRecipesResponseListener, tags);
@@ -102,11 +111,19 @@ public class SearchActivity extends AppCompatActivity {
         manager = new RequestManager(this);
     }
 
+    private void findView() {
+        searchView = findViewById(R.id.search_view);
+        back_btn2 = findViewById(R.id.back_btn2);
+        rv_search_recipes = findViewById(R.id.rv_search_recipes);
+        txt_search_recipes = findViewById(R.id.txt_search_recipes);
+        txt_empty_search_recipes = findViewById(R.id.txt_empty_search_recipes);
+        img_empty_search_recipes = findViewById(R.id.img_empty_search_recipes);
+    }
+
     private final RandomRecipesResponseListener randomRecipesResponseListener = new RandomRecipesResponseListener() {
         @Override
         public void didFetch(RandomRecipesApiResponse response, String msg) {
             dialog.dismiss();
-            rv_search_recipes = findViewById(R.id.rv_search_recipes);
             rv_search_recipes.setHasFixedSize(true);
             rv_search_recipes.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
             randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);

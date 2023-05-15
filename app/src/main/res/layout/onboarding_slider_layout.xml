@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:scaleType="fitXY"
-        android:src="@drawable/bac_1"/>
+        android:src="@drawable/onboarding_bac_1"/>
 
     <TextView
         android:id="@+id/slide_title"

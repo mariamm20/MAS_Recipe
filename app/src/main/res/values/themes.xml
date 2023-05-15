@@ -23,6 +23,17 @@
     <!--        <item name="android:icon">@drawable/ic_baseline_logout_24</item>-->
     <!--    </style>-->
 
+    <style name="MyAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/green_600</item>
+        <item name="colorSecondary">@color/red</item>
+        <item name="shapeAppearanceOverlay">@style/MyShapeAppearanceOverlay</item>
+    </style>
+
+    <style name="MyShapeAppearanceOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="TextInputLayout_Outlined" parent="">
         <item name="colorControlActivated">#03D9C5</item>
     </style>

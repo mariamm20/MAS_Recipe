@@ -1,6 +1,7 @@
 package com.example.mas_recipes.Registration;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
@@ -45,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
-        String Name =pref.getString("name", "user name");
+        String Name = pref.getString("name", "user name");
         String Email = pref.getString("email", "email");
         String Password = pref.getString("password", "password");
         Integer user_id = pref.getInt("id", -1);
@@ -63,7 +64,7 @@ public class EditProfileActivity extends AppCompatActivity {
         logout_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditProfileActivity.this);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditProfileActivity.this, R.style.MyAlertDialogTheme);
                 builder.setTitle("Logout");
                 builder.setMessage("Are you sure you want to logout?");
                 builder.setIcon(R.drawable.ic_baseline_logout_24);
@@ -113,10 +114,10 @@ public class EditProfileActivity extends AppCompatActivity {
         edit_profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditProfileActivity.this);
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(EditProfileActivity.this, R.style.MyAlertDialogTheme);
                 builder.setTitle("Edit Profile");
                 builder.setMessage("Save Changes?");
-                builder.setIcon(R.drawable.ic_baseline_logout_24);
+                builder.setIcon(R.drawable.ic_baseline_edit_24);
 
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -161,10 +162,11 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
 
+
+
                 builder.show();
             }
         });
-
 
 
     }

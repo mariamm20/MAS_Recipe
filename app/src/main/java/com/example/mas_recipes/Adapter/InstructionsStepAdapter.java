@@ -1,6 +1,7 @@
 package com.example.mas_recipes.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,12 @@ public class InstructionsStepAdapter extends RecyclerView.Adapter<InstructionsSt
         EquipmentAdapter equipmentAdapter = new EquipmentAdapter(context, stepList.get(position).equipment);
         holder.rv_instructions_equipment.setAdapter(equipmentAdapter);
 
+        if (holder.rv_instructions_equipment.getAdapter() != null && holder.rv_instructions_equipment.getAdapter().getItemCount() > 0) {
+            holder.txt_instruction_equipment.setText("Equipment");
+        } else {
+            holder.txt_instruction_equipment.setText("No Equipment Required");
+//            holder.txt_instruction_equipment.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+        }
 
         holder.txt_instruction_step_number.startAnimation(animation);
         holder.txt_instruction_step_title.startAnimation(animation);
@@ -60,13 +67,14 @@ public class InstructionsStepAdapter extends RecyclerView.Adapter<InstructionsSt
 
 
     class InstructionsStepViewHolder extends RecyclerView.ViewHolder {
-        TextView txt_instruction_step_number, txt_instruction_step_title;
+        TextView txt_instruction_step_number, txt_instruction_step_title, txt_instruction_equipment;
         RecyclerView rv_instructions_equipment;
 
         public InstructionsStepViewHolder(@NonNull View itemView) {
             super(itemView);
             txt_instruction_step_number = itemView.findViewById(R.id.txt_instruction_number);
             txt_instruction_step_title = itemView.findViewById(R.id.txt_instruction_title);
+            txt_instruction_equipment = itemView.findViewById(R.id.txt_instruction_equipment);
             rv_instructions_equipment = itemView.findViewById(R.id.rv_equipment);
         }
     }

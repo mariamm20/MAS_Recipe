@@ -17,9 +17,9 @@ public class OnboardingViewPagerAdapter extends PagerAdapter {
     Context context;
 
     int images[] = {
-            R.drawable.bac_1,
-            R.drawable.bac_2,
-            R.drawable.bac_3
+            R.drawable.onboarding_bac_1,
+            R.drawable.onboarding_bac_2,
+            R.drawable.onboarding_bac_3
     };
 
     int titles[] = {

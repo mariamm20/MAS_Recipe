@@ -4,36 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_bac"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@color/green_600"
     tools:context=".WelcomeScreens.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="150dp"
-        app:srcCompat="@drawable/green_logo" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@drawable/white_logo" />
 
-    <TextView
-        android:id="@+id/textView"
+    <ImageView
+        android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="70dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/main_description"
-        android:textAlignment="center"
-        android:textColor="@color/green_800"
-        android:textSize="28sp" />
+        android:paddingHorizontal="90dp"
+        app:srcCompat="@drawable/app_name3" />
 
     <ProgressBar
         android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="55dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="180dp"
         android:indeterminate="true"
         android:indeterminateDuration="1000" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="6dp"
+        android:text="Loading ..."
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="21sp" />
+
 </LinearLayout>
+
+
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@drawable/splash_bac0"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--android:orientation="vertical"-->
+    <!--tools:context=".WelcomeScreens.SplashScreenActivity">-->
+
+    <!--<ImageView-->
+    <!--    android:id="@+id/logo"-->
+    <!--    android:layout_width="200dp"-->
+    <!--    android:layout_height="200dp"-->
+    <!--    android:layout_marginTop="140dp"-->
+    <!--    app:srcCompat="@drawable/splash_img" />-->
+
+    <!--<ImageView-->
+    <!--    android:id="@+id/app_name"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:paddingHorizontal="90dp"-->
+    <!--    app:srcCompat="@drawable/app_name4" />-->
+
+    <!--<ProgressBar-->
+    <!--    android:id="@+id/progressBar"-->
+    <!--    style="?android:attr/progressBarStyleHorizontal"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginHorizontal="55dp"-->
+    <!--    android:layout_marginTop="180dp"-->
+    <!--    android:paddingVertical="10dp"-->
+    <!--    android:paddingHorizontal="15dp"-->
+    <!--    android:indeterminate="true"-->
+    <!--    android:indeterminateDuration="1000"-->
+    <!--    android:background="@color/white"/>-->
+
+    <!--</LinearLayout>-->

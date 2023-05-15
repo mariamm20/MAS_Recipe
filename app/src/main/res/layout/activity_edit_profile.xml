@@ -13,11 +13,12 @@
         android:id="@+id/edit_profile_back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
         android:layout_gravity="left"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="-40dp"
         android:background="#D1E9D2"
-        app:tint="@color/green_600"
-        android:src="@drawable/ic_back" />
+        android:src="@drawable/ic_back"
+        app:tint="@color/green_600" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -108,7 +109,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="12dp"
-                android:visibility="gone"
                 android:background="@drawable/custom_edittext"
                 android:drawableLeft="@drawable/ic_baseline_lock_reset_24"
                 android:drawablePadding="8dp"
@@ -117,7 +117,8 @@
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background" />
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/edit_profile_btn"

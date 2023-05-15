@@ -1,5 +1,7 @@
 package com.example.mas_recipes.WelcomeScreens;
 
+import static java.lang.Thread.sleep;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -36,11 +38,25 @@ public class SplashScreenActivity extends AppCompatActivity {
         boolean isUserLoggedIn = prefs.getBoolean("is_user_logged_in", false);
         Log.d("SplashScreenActivity", "isUserLoggedIn = " + isUserLoggedIn);
 
+        Thread thread;
         if (isUserLoggedIn) {
-            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-            startActivity(intent);
+            thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        run_ProgressBar();
+                        sleep(3000);
+                        Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
         } else {
-            Thread thread = new Thread() {
+            thread = new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -54,8 +70,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }
             };
-            thread.start();
         }
+        thread.start();
     }
 
     private void findView() {
@@ -63,10 +79,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void run_ProgressBar() {
-//        progressbar.setScaleY(1.5f);
-        int color = Color.parseColor("#43A047");
+        progressbar.setScaleY(1.5f);
+//        int color = Color.parseColor("#43A047"); //green
+        int color = Color.parseColor("#ffffff");
+
         progressbar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-//        progressbar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        progressbar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         final Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
