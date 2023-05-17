@@ -13,7 +13,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import com.example.mas_recipes.API.RequestManager;
 import com.example.mas_recipes.Adapter.RandomRecipesAdapter;
 import com.example.mas_recipes.R;
 import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
-import com.example.mas_recipes.RoomDatabase.AppDatabase;
 import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 import java.util.ArrayList;
@@ -84,8 +82,8 @@ public class SuggestionFragment extends Fragment {
     RequestManager manager;
     RandomRecipesAdapter randomRecipesAdapter;
 
-    ImageView img_empty_recipes;
-    TextView txt_empty_recipes, txt_suggested_recipes;
+    ImageView img_empty_suggestion_recipes;
+    TextView txt_empty_suggestion_recipes, txt_suggestion_recipes;
 
     List<String> tags = new ArrayList<>();
 
@@ -99,9 +97,9 @@ public class SuggestionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rv_suggested_recipes = view.findViewById(R.id.rv_suggested_recipes);
-        img_empty_recipes = view.findViewById(R.id.img_empty_recipes);
-        txt_empty_recipes = view.findViewById(R.id.txt_empty_recipes);
-        txt_suggested_recipes = view.findViewById(R.id.txt_suggested_recipes);
+        img_empty_suggestion_recipes = view.findViewById(R.id.img_empty_suggestion_recipes);
+        txt_empty_suggestion_recipes = view.findViewById(R.id.txt_empty_suggestion_recipes);
+        txt_suggestion_recipes = view.findViewById(R.id.txt_suggestion_recipes);
 
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("Loading Suggestions...");
@@ -127,10 +125,22 @@ public class SuggestionFragment extends Fragment {
         @Override
         public void didFetch(RandomRecipesApiResponse response, String msg) {
             dialog.dismiss();
-            rv_suggested_recipes.setHasFixedSize(true);
-            rv_suggested_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
-            rv_suggested_recipes.setAdapter(randomRecipesAdapter);
+            if (response != null && response.recipes != null) {
+                txt_empty_suggestion_recipes.setVisibility(View.GONE);
+                img_empty_suggestion_recipes.setVisibility(View.GONE);
+                rv_suggested_recipes.setVisibility(View.VISIBLE);
+                rv_suggested_recipes.setHasFixedSize(true);
+                rv_suggested_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
+                rv_suggested_recipes.setAdapter(randomRecipesAdapter);
+            } else {
+                txt_empty_suggestion_recipes.setVisibility(View.VISIBLE);
+                txt_empty_suggestion_recipes.setText("There is no recipes to show ...");
+                img_empty_suggestion_recipes.setVisibility(View.VISIBLE);
+                rv_suggested_recipes.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "No Data Yet", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         @Override
@@ -143,9 +153,9 @@ public class SuggestionFragment extends Fragment {
     private final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            img_empty_recipes.setVisibility(View.GONE);
-            txt_empty_recipes.setVisibility(View.GONE);
-            txt_suggested_recipes.setVisibility(View.VISIBLE);
+            img_empty_suggestion_recipes.setVisibility(View.GONE);
+            txt_empty_suggestion_recipes.setVisibility(View.GONE);
+            txt_suggestion_recipes.setVisibility(View.VISIBLE);
             rv_suggested_recipes.setVisibility(View.VISIBLE);
             tags.clear();
             String itemSelected = adapterView.getItemAtPosition(i).toString();

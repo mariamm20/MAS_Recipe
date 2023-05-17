@@ -1,6 +1,5 @@
 package com.example.mas_recipes.API.Listeners;
 
-
 import com.example.mas_recipes.API.Models.RandomRecipesApiResponse;
 
 public interface RandomRecipesResponseListener {

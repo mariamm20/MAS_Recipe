@@ -1,7 +1,6 @@
 package com.example.mas_recipes.Registration;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
@@ -161,14 +160,9 @@ public class EditProfileActivity extends AppCompatActivity {
                         dialogInterface.dismiss();
                     }
                 });
-
-
-
                 builder.show();
             }
         });
-
-
     }
 
     private void findView() {

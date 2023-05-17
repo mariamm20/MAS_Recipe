@@ -1,11 +1,12 @@
 package com.example.mas_recipes.Home;
 
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +35,6 @@ import com.example.mas_recipes.Adapter.RandomRecipesAdapter;
 import com.example.mas_recipes.R;
 import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
 import com.example.mas_recipes.Registration.EditProfileActivity;
-import com.example.mas_recipes.RoomDatabase.AppDatabase;
 import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 
@@ -83,9 +82,8 @@ public class HomeFragment extends Fragment {
     RecyclerView rv_random_recipes;
 
     CardView searchbar_card, profile_card;
-    ImageView reload_btn;
-    AppDatabase db;
-    TextView tv_id;
+    ImageView reload_btn, img_empty_home_recipes;
+    TextView txt_username, txt_empty_home_recipes;
     String name;
 
     WishlistViewModel wishlistViewModel;
@@ -101,7 +99,9 @@ public class HomeFragment extends Fragment {
         searchbar_card = view.findViewById(R.id.searchbar_card);
         profile_card = view.findViewById(R.id.profile_card);
         reload_btn = view.findViewById(R.id.reload_btn);
-        tv_id = view.findViewById(R.id.tv_id);
+        txt_username = view.findViewById(R.id.txt_username);
+        txt_empty_home_recipes = view.findViewById(R.id.txt_empty_home_recipes);
+        img_empty_home_recipes = view.findViewById(R.id.img_empty_home_recipes);
 
         dialog = new ProgressDialog(getContext());
         dialog.setTitle("Loading Recipes...");
@@ -111,14 +111,25 @@ public class HomeFragment extends Fragment {
         name = pref.getString("name", "Hello, Dear Customer");
 
         Log.d("user_id", String.valueOf(user_id));
-        tv_id.setText("Hello, " +name);
+        txt_username.setText("Hello, " + name);
 
         lifecycleOwner = this;
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
 
+//        ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+//        if (networkInfo != null && networkInfo.isConnected()) {
+//            manager = new RequestManager(getContext());
+//            manager.getRandomRecipes(randomRecipesResponseListener);
+//            dialog.show();
+//        } else {
+//            Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+//        }
+
         manager = new RequestManager(getContext());
         manager.getRandomRecipes(randomRecipesResponseListener);
         dialog.show();
+
 
         reload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,10 +162,21 @@ public class HomeFragment extends Fragment {
         @Override
         public void didFetch(RandomRecipesApiResponse response, String msg) {
             dialog.dismiss();
-            rv_random_recipes.setHasFixedSize(true);
-            rv_random_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel,lifecycleOwner, user_id);
-            rv_random_recipes.setAdapter(randomRecipesAdapter);
+            if (response != null && response.recipes != null) {
+                txt_empty_home_recipes.setVisibility(View.GONE);
+                img_empty_home_recipes.setVisibility(View.GONE);
+                rv_random_recipes.setVisibility(View.VISIBLE);
+                rv_random_recipes.setHasFixedSize(true);
+                rv_random_recipes.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                randomRecipesAdapter = new RandomRecipesAdapter(getContext(), response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
+                rv_random_recipes.setAdapter(randomRecipesAdapter);
+            } else {
+                txt_empty_home_recipes.setVisibility(View.VISIBLE);
+                txt_empty_home_recipes.setText("There is no recipes to show ...");
+                img_empty_home_recipes.setVisibility(View.VISIBLE);
+                rv_random_recipes.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "No Data Yet", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override

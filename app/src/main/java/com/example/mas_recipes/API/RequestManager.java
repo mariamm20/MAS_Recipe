@@ -149,52 +149,6 @@ public class RequestManager {
         });
     }
 
-//    public void getWishlistRecipes(RandomRecipesResponseListener listener, int user_id) {
-//
-//        List<WishlistEntity> wishlistEntities = db.wishlistDao().getWishlistItemByUserID(user_id);
-//        // Create a set of recipe IDs in the wishlist for efficient lookup
-//        Set<Integer> wishlistRecipeIds = new HashSet<>();
-//        for (WishlistEntity wishlistEntity : wishlistEntities) {
-//            wishlistRecipeIds.add(wishlistEntity.getRecipe_id());
-//        }
-//        for (Integer recipeId : wishlistRecipeIds) {
-//            Log.d("WishlistAdapter", "Recipe ID: " + recipeId);
-//        }
-//
-//        CallWishlistRecipes callWishlistRecipes = retrofit.create(CallWishlistRecipes.class);
-//        Call<RandomRecipesApiResponse> call = callWishlistRecipes.callRandomRecipes(context.getString(R.string.api_key));
-//        call.enqueue(new Callback<RandomRecipesApiResponse>() {
-//            @Override
-//            public void onResponse(Call<RandomRecipesApiResponse> call, Response<RandomRecipesApiResponse> response) {
-//                if (!response.isSuccessful()) {
-//                    listener.didError(response.message());
-//                }
-//
-//
-//                // Filter the list of recipes based on the set of recipe IDs in the wishlist
-//                ArrayList<Recipe> wishlistRecipes = new ArrayList<>();
-//                RandomRecipesApiResponse apiResponse = response.body();
-//                List<Recipe> recipes = apiResponse.getRecipes();
-//                for (Recipe recipe : apiResponse.getRecipes()) {
-//                    if (wishlistRecipeIds.contains(recipe.getId())) {
-//                        wishlistRecipes.add(recipe);
-//                    }
-//                }
-//
-//                listener.didFetch(new RandomRecipesApiResponse(wishlistRecipes), response.message());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RandomRecipesApiResponse> call, Throwable t) {
-//                listener.didError(t.getMessage());
-//            }
-//        });
-//
-//
-//
-//    }
-
     //----interfaces----------
     private interface CallRandomRecipes {
         @GET("recipes/random")
@@ -237,13 +191,5 @@ public class RequestManager {
                 @Query("tags") List<String> tags
         );
     }
-
-//    private interface CallWishlistRecipes {
-//        @GET("recipes/random")
-//        Call<RandomRecipesApiResponse> callRandomRecipes(
-//                @Query("apiKey") String apiKey
-//        );
-//    }
-
 
 }

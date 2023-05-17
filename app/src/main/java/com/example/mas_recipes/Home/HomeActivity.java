@@ -8,10 +8,8 @@ import com.example.mas_recipes.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
-import java.util.HashMap;
 
 public class HomeActivity extends AppCompatActivity {
 

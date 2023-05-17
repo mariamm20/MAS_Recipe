@@ -6,7 +6,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -29,7 +28,6 @@ import com.example.mas_recipes.API.RequestManager;
 import com.example.mas_recipes.Adapter.RandomRecipesAdapter;
 import com.example.mas_recipes.R;
 import com.example.mas_recipes.RecipeDetails.RecipeDetailsActivity;
-import com.example.mas_recipes.RoomDatabase.AppDatabase;
 import com.example.mas_recipes.RoomDatabase.WishlistViewModel;
 
 import java.util.ArrayList;
@@ -124,10 +122,22 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void didFetch(RandomRecipesApiResponse response, String msg) {
             dialog.dismiss();
-            rv_search_recipes.setHasFixedSize(true);
-            rv_search_recipes.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
-            randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
-            rv_search_recipes.setAdapter(randomRecipesAdapter);
+            if (response != null && response.recipes != null) {
+                txt_empty_search_recipes.setVisibility(View.GONE);
+                img_empty_search_recipes.setVisibility(View.GONE);
+                rv_search_recipes.setVisibility(View.VISIBLE);
+                rv_search_recipes.setHasFixedSize(true);
+                rv_search_recipes.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
+                randomRecipesAdapter = new RandomRecipesAdapter(SearchActivity.this, response.recipes, recipeClickListener, wishlistViewModel, lifecycleOwner, user_id);
+                rv_search_recipes.setAdapter(randomRecipesAdapter);
+            } else {
+                txt_empty_search_recipes.setVisibility(View.VISIBLE);
+                txt_empty_search_recipes.setText("There is no recipes to show ...");
+                img_empty_search_recipes.setVisibility(View.VISIBLE);
+                rv_search_recipes.setVisibility(View.GONE);
+                rv_search_recipes.setVisibility(View.GONE);
+                Toast.makeText(SearchActivity.this, "No Data Yet", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override

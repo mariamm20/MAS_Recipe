@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserEntity.class, WishlistEntity.class}, version = 1)
+@Database(entities = {UserEntity.class, WishlistEntity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "recipe_db";

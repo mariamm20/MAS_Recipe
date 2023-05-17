@@ -1,7 +1,6 @@
 package com.example.mas_recipes.API.Listeners;
 
 import com.example.mas_recipes.API.Models.SimilarRecipesResponse;
-
 import java.util.List;
 
 public interface SimilarRecipesListener {

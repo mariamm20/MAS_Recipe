@@ -261,12 +261,4 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     };
 
-//    private void onBack(RecipeDetailsResponse response) {
-//        if(details_recipe_checkbox.isChecked()){
-//            sharedPreferences_checkbox.edit().putBoolean(WISHLIST_CHECKBOX_STATE_KEY + "_" + user_id + "_" + response.id, true).apply();
-//        }
-//        finish();
-//    }
-
-
 }

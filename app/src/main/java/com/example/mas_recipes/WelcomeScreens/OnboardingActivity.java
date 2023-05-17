@@ -32,20 +32,14 @@ public class OnboardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
-        onboarding_back_btn = findViewById(R.id.onboarding_back_btn);
-        onboarding_next_btn = findViewById(R.id.onboarding_next_btn);
-        onboarding_skip_btn = findViewById(R.id.onboarding_skip_btn);
+        findView();
 
         onboarding_back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (getitem(0) > 0) {
-
                     viewPager.setCurrentItem(getitem(-1), true);
-
                 }
-
             }
         });
 
@@ -70,8 +64,6 @@ public class OnboardingActivity extends AppCompatActivity {
         onboarding_skip_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent i = new Intent(OnboardingActivity.this, HomeActivity.class);
                 startActivity(i);
                 finish();
@@ -79,16 +71,19 @@ public class OnboardingActivity extends AppCompatActivity {
             }
         });
 
-        viewPager = (ViewPager) findViewById(R.id.slideViewPager);
-        dot_layout = (LinearLayout) findViewById(R.id.indicator_layout);
-
         onboardingViewPagerAdapter = new OnboardingViewPagerAdapter(this);
-
         viewPager.setAdapter(onboardingViewPagerAdapter);
-
         setUpIndicator(0);
         viewPager.addOnPageChangeListener(viewListener);
 
+    }
+
+    private void findView() {
+        onboarding_back_btn = findViewById(R.id.onboarding_back_btn);
+        onboarding_next_btn = findViewById(R.id.onboarding_next_btn);
+        onboarding_skip_btn = findViewById(R.id.onboarding_skip_btn);
+        viewPager = (ViewPager) findViewById(R.id.slideViewPager);
+        dot_layout = (LinearLayout) findViewById(R.id.indicator_layout);
     }
 
     public void setUpIndicator(int position) {
@@ -129,8 +124,7 @@ public class OnboardingActivity extends AppCompatActivity {
             }
             if (position == viewPager.getAdapter().getCount() - 1) {
                 onboarding_next_btn.setImageResource(R.drawable.ic_baseline_correct_24);
-            }
-            else {
+            } else {
                 onboarding_next_btn.setImageResource(R.drawable.ic_next);
 
             }

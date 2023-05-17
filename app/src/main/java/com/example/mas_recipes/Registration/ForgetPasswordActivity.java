@@ -18,9 +18,7 @@ import com.example.mas_recipes.R;
 import com.example.mas_recipes.RoomDatabase.AppDatabase;
 import com.example.mas_recipes.RoomDatabase.UserDao;
 import com.example.mas_recipes.RoomDatabase.UserEntity;
-import com.example.mas_recipes.WelcomeScreens.OnboardingActivity;
 
-import java.util.Locale;
 import java.util.Objects;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
@@ -35,15 +33,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
 
-        reset_link_btn = findViewById(R.id.reset_link_btn);
-        email = findViewById(R.id.forget_pass_email_edittext);
-        password = findViewById(R.id.forget_pass);
-        confirm_password = findViewById(R.id.forget_confirm_pass);
+        findView();
 
         reset_link_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-// code
+
                 String emailText = email.getText().toString();
                 String passwordText = password.getText().toString();
                 String confirmPasswordText = confirm_password.getText().toString();
@@ -69,8 +64,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         Toast.makeText(ForgetPasswordActivity.this, "This Email is not Existed", Toast.LENGTH_SHORT).show();
-
-
                                     }
                                 });
 
@@ -108,7 +101,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             }
         });
 
-        signup_txt2 = findViewById(R.id.forget_pass_signup_txt);
         signup_txt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +108,15 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
+    }
+
+    private void findView() {
+        reset_link_btn = findViewById(R.id.reset_link_btn);
+        email = findViewById(R.id.forget_pass_email_edittext);
+        password = findViewById(R.id.forget_pass);
+        confirm_password = findViewById(R.id.forget_confirm_pass);
+        signup_txt2 = findViewById(R.id.forget_pass_signup_txt);
+
     }
 
     private static boolean Emailcheck(UserEntity userEntity, AppDatabase userDatabase, UserDao userDao) {

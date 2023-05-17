@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        findViews();
+        findView();
 
 
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void findViews() {
+    private void findView() {
         email = findViewById(R.id.login_email_edittext);
         password = findViewById(R.id.login_password_edittext);
         login_btn = findViewById(R.id.login_btn);

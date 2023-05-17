@@ -112,7 +112,7 @@
             </androidx.cardview.widget.CardView>
 
             <ImageView
-                android:id="@+id/img_empty_recipes"
+                android:id="@+id/img_empty_suggestion_recipes"
                 android:layout_width="224dp"
                 android:layout_height="277dp"
                 android:layout_marginTop="8dp"
@@ -121,13 +121,13 @@
                 android:src="@drawable/cookingpot"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/txt_empty_recipes"
+                app:layout_constraintEnd_toEndOf="@+id/txt_empty_suggestion_recipes"
                 app:layout_constraintHorizontal_bias="0.486"
-                app:layout_constraintStart_toStartOf="@+id/txt_empty_recipes"
-                app:layout_constraintTop_toBottomOf="@+id/txt_empty_recipes" />
+                app:layout_constraintStart_toStartOf="@+id/txt_empty_suggestion_recipes"
+                app:layout_constraintTop_toBottomOf="@+id/txt_empty_suggestion_recipes" />
 
             <TextView
-                android:id="@+id/txt_empty_recipes"
+                android:id="@+id/txt_empty_suggestion_recipes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="72dp"
@@ -142,7 +142,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/suggestions_tv" />
 
             <TextView
-                android:id="@+id/txt_suggested_recipes"
+                android:id="@+id/txt_suggestion_recipes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -167,7 +167,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_suggested_recipes"
+                app:layout_constraintTop_toBottomOf="@+id/txt_suggestion_recipes"
                 app:layout_constraintVertical_bias="0.0"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
